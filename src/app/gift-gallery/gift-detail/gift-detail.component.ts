@@ -29,14 +29,14 @@ export class GiftDetailComponent implements OnInit {
   reedam_approved:any =0;
   reedam_reject:any =0;
   reedam_verified:any=0;
-  uploadUrl:any='';
-
+  uploadUrl:any={}
   
   constructor(public db: DatabaseService, private route: ActivatedRoute, private router: Router, public ses: SessionStorage,
-    public dialog: DialogComponent, public alrt:MatDialog ) {}
-    ngOnInit() {
-      this.uploadUrl = this.db.uploadUrl;
+    public dialog: DialogComponent, public alrt:MatDialog ) {
+      this.uploadUrl = db.uploadUrl;
 
+    }
+    ngOnInit() {
       this.filter.gift_status = ''
       this.route.params.subscribe(params => {
         this.gift_id = params['gift_id'];
@@ -135,34 +135,17 @@ export class GiftDetailComponent implements OnInit {
                 });
             }
         }
-    openDialog4(id ,string ) {
-      const dialogRef = this.alrt.open(ProductImageModuleComponent,
-        {
-          // width: '500px',
-          // height:'500px',
-          data: {
-            'id' : id,
-            'mode' : string,
+        openDialog(img) {
+          const dialogRef = this.alrt.open(ProductImageModuleComponent,
+            {
+              data: {
+                'img' : img,
+              }
+            });
+            dialogRef.afterClosed().subscribe(result => {
+              console.log(`Dialog result: ${result}`);
+            });
           }
-        });
-        dialogRef.afterClosed().subscribe(result => {
-          console.log(`Dialog result: ${result}`);
-        });
-      }
-      openDialog2(id ,string ) {
-        const dialogRef = this.alrt.open(ProductImageModuleComponent,
-          {
-            // width: '500px',
-            // height:'500px',
-            data: {
-              'id' : id,
-              'mode' : string,
-            }
-          });
-          dialogRef.afterClosed().subscribe(result => {
-            console.log(`Dialog result: ${result}`);
-          });
-        }
       changeStatus(id)
         {
           const dialogRef = this.alrt.open(ChangeStatusComponent,

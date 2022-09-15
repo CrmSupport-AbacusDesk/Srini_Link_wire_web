@@ -22,8 +22,6 @@ export class ProductsListComponent implements OnInit {
     loader: any = false;
     locations: any = [];
     products:any = [];
-    category:any=[];
-    subCategory:any=[];
     total_products:any = 0;
     last_page: number ;
     current_page = 1;
@@ -37,9 +35,7 @@ export class ProductsListComponent implements OnInit {
     image = new FormData();
     uploadurl:any='';
     addImageIcon=true;
-    constructor(public db: DatabaseService, private route: ActivatedRoute, private router: Router, public ses: SessionStorage,public dialog: DialogComponent, public alrt:MatDialog ) {
-        this.getCategory()
-    }
+    constructor(public db: DatabaseService, private route: ActivatedRoute, private router: Router, public ses: SessionStorage,public dialog: DialogComponent, public alrt:MatDialog ) {}
     
     ngOnInit() {
         this.getProductList('');
@@ -64,16 +60,6 @@ export class ProductsListComponent implements OnInit {
         this.getProductList('');
     }
     
-    currentPage = () => {
-        if(this.current_page < 1){
-            this.current_page = 1;
-        }else if (this.current_page > this.last_page) { 
-            this.current_page = this.last_page;
-        }
-        this.getProductList('');
-    }
-    
-    
     getProductList(action) 
     {
         this.loading_list = true;
@@ -95,6 +81,7 @@ export class ProductsListComponent implements OnInit {
             this.last_page = d.products.last_page;
             this.total_products =d.products.total;
             this.products = d.products.data;
+            // this.selected_image=d.products.image;
             this.productForm =  this.products;
             
             for(let i=0;i<this.products.length;i++)
@@ -113,7 +100,7 @@ export class ProductsListComponent implements OnInit {
         });
     }
     
-    
+    category:any=[];
     getCategory()
     {
         this.db.post_rqst(  '', 'master/categoryForProduct')
@@ -124,50 +111,18 @@ export class ProductsListComponent implements OnInit {
         });
     }
     
-    
-    getSubCat(event){
-        let category_id;
-        
-        if(event == 1)
-        {
-            category_id = this.productForm.category_id;
-            category_id = this.filter.main_category;
-        }
-        this.db.post_rqst({'category_id':event}, 'master/subCategoryForProduct')
-        .subscribe(d => {  
-            this.subCategory = d.category;  
-        });
-    }
-    
-    
     catdata:any='';
-    
-    
-    
-    
     editProduct(id,index){
         this.addImageIcon=true;
         this.productForm = this.products.filter( x => x.id==id)[0];
         this.productForm.profile_selected = parseInt(this.productForm.profile);
         console.log(this.productForm);
-        if (this.productForm.category_id) {
-            this.db.post_rqst({'category_id':this.productForm.category_id}, 'master/subCategoryForProduct')
-            .subscribe(d => {  
-                this.subCategory = d.category;  
-            });
-        }
-        
-        this.selected_image=[];
-        this.productForm.category_id=this.productForm.category_id;
-        this.productForm.subCategory_id=this.productForm.subCategory_id;
-        this.productForm.profile_selected = 0;
-        
-        // for(let i=0; i<this.productForm.image.length ;i++)
-        // {
-        //     if( parseInt( this.productForm.image[i].profile ) == 1  )
-        //     this.productForm.profile_selected = this.productForm.image[i].id;
-        //     this.selected_image.push({"image":this.productForm.image[i].image_name,"id":this.productForm.image[i].id} );
+        // if(this.productForm.new_arrival==1){
+        //     this.productForm.new_arrival.check;
         // }
+        this.selected_image=[];
+        this.productForm.category_id=this.productForm.master_category_id;
+        this.productForm.profile_selected = 0;
         
         for(let i=0; i<this.productForm.image.length ;i++)
         {
@@ -186,8 +141,6 @@ export class ProductsListComponent implements OnInit {
         }
         this.productForm.image= this.selected_image ? this.selected_image : []
         this.productForm.created_by = this.db.datauser.id;
-        this.productForm.product_code = this.productForm.company_item_code;
-        
         console.log(this.new_arrival);
         
         this.productForm.new_arrival=this.new_arrival;
@@ -197,7 +150,7 @@ export class ProductsListComponent implements OnInit {
             if(d['status'] == 'EXIST' )
             {
                 this.savingData = false;
-                this.dialog.error('This Product Already exists');
+                this.dialog.error('This Product Size Already exists');
                 return;
             }
             
@@ -255,40 +208,34 @@ export class ProductsListComponent implements OnInit {
             console.log(resp);
             if(resp)
             {
-                this.db.post_rqst({"data":data},"master/delete_prod_image")
-                .subscribe(resp=>{
-                    console.log(resp);
+                if(data.id){
+                    this.db.post_rqst({"data":data},"master/delete_prod_image")
+                    .subscribe(resp=>{
+                        console.log(resp);
+                        this.dialog.success("Deleted!");
+                        this.selected_image.splice(index,1);
+                        if(this.selected_image.length==0)
+                        {
+                            this.addImageIcon=true;
+                            console.log("truee");
+                        }
+                        else{
+                            this.addImageIcon=false;
+                        }
+                    });
+                }
+                else{
                     this.dialog.success("Deleted!");
-                    this.selected_image.splice(index,1)
-                });
-                // if(data.id){
-                //     this.db.post_rqst({"data":data},"master/delete_prod_image")
-                //     .subscribe(resp=>{
-                //         console.log(resp);
-                //         this.dialog.success("Deleted!");
-                //         this.selected_image.splice(index,1);
-                //         if(this.selected_image.length==0)
-                //         {
-                //             this.addImageIcon=true;
-                //             console.log("truee");
-                //         }
-                //         else{
-                //             this.addImageIcon=false;
-                //         }
-                //     });
-                // }
-                // else{
-                //     this.dialog.success("Deleted!");
-                //     this.selected_image.splice(index,1);
-                //     if(this.selected_image.length==0)
-                //     {
-                //         this.addImageIcon=true;
-                //         console.log("truee");
-                //     }
-                //     else{
-                //         this.addImageIcon=false;
-                //     }
-                // }
+                    this.selected_image.splice(index,1);
+                    if(this.selected_image.length==0)
+                    {
+                        this.addImageIcon=true;
+                        console.log("truee");
+                    }
+                    else{
+                        this.addImageIcon=false;
+                    }
+                }
             }
         })
     }
@@ -311,10 +258,13 @@ export class ProductsListComponent implements OnInit {
         this.selected_image=[];
     }
     
-    deleteProduct(id) {
+    deleteProduct(id, product_id) {
+        console.log('====================================');
+        console.log(id, product_id);
+        console.log('====================================');
         this.dialog.delete('Product').then((result) => {
             if(result) {
-                this.db.post_rqst({product_id : id}, 'master/productDelete')
+                this.db.post_rqst({product_id : product_id, id:id}, 'master/productDelete')
                 .subscribe(d => {
                     console.log(d);
                     this.getProductList('');
@@ -362,7 +312,6 @@ export class ProductsListComponent implements OnInit {
     openDialog(id ,string )
     {
         const dialogRef = this.alrt.open(ProductImageModuleComponent,{
-            panelClass: 'zoom-box',
             data: {
                 'id' : id,
                 'mode' : string,
@@ -383,7 +332,7 @@ export class ProductsListComponent implements OnInit {
             console.log(d);
         });
     }
-    
+
     new_arrival;
     newArrival(e){
         console.log(e.checked);
@@ -394,7 +343,7 @@ export class ProductsListComponent implements OnInit {
             this.new_arrival=0;
         }
     }
-    
+
     assign_arr:any=[]
     unassign_arr:any=[]
     select_product(event,indx)

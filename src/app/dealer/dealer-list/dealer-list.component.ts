@@ -6,96 +6,88 @@ import { ActivatedRoute } from '@angular/router';
 import { MastetDateFilterModelComponent } from 'src/app/mastet-date-filter-model/mastet-date-filter-model.component';
 import { SendmessageComponent } from 'src/app/master/karigar-data/sendmessage/sendmessage.component';
 import { SendNotificationComponent } from 'src/app/master/karigar-data/send-notification/send-notification.component';
+import { ChangeTypeModalComponent } from 'src/app/change-type-modal/change-type-modal.component';
 
 @Component({
-  selector: 'app-dealer-list',
-  templateUrl: './dealer-list.component.html',
-  styleUrls: ['./dealer-list.component.scss']
+    selector: 'app-dealer-list',
+    templateUrl: './dealer-list.component.html',
+    styleUrls: ['./dealer-list.component.scss']
 })
 export class DealerListComponent implements OnInit {
-
-  loading_list = true;
-  dealers: any = [];
-  total_dealers = 0;
-  dealer_all:any =0;
-  
-  last_page: number ;
-  current_page = 1;
-  search: any = '';
-  filter:any = {};
-  filtering : any = false;
-  select_all:any=false;
-  
-  dealer_pending : any = 0;
-  dealer_reject : any = 0;
-  dealer_suspect : any = 0;
-  dealer_verified : any = 0;
-
-  constructor(public db: DatabaseService, public dialog: DialogComponent,public route:ActivatedRoute,public alrt:MatDialog) {
-    this.route.params.subscribe(resp=>{
-        this.current_page = resp.page;
-        console.log("helo");
-        
-    });
-    this.filter = this.db.get_filters();
-    console.log(this.filter);
-    if(this.filter.status == undefined)
-    {
-        this.filter.status = 'All';
+    
+    loading_list = true;
+    dealers: any = [];
+    total_dealers = 0;
+    dealer_all:any =0;
+    
+    last_page: number ;
+    current_page = 1;
+    search: any = '';
+    filter:any = {};
+    filtering : any = false;
+    select_all:any=false;
+    
+    dealer_pending : any = 0;
+    dealer_reject : any = 0;
+    dealer_suspect : any = 0;
+    dealer_verified : any = 0;
+    
+    constructor(public db: DatabaseService, public dialog: DialogComponent,public route:ActivatedRoute,public alrt:MatDialog) {
+        this.route.params.subscribe(resp=>{
+            this.current_page = resp.page;
+            console.log("helo");
+            
+        });
+        this.filter = this.db.get_filters();
+        console.log(this.filter);
+        if(this.filter.status == undefined)
+        {
+            this.filter.status = 'All';
+        }
     }
-}
-
-  ngOnInit() {
-    this.get_dealer_type();
-    this.getDealerList(''); 
-    this.AssignSaleUser();
-  }
-
-  openDatePicker(picker : MatDatepicker<Date>)
-  {
-      picker.open();
-  }
-  redirect_previous() {
-      this.current_page--;
-      this.getDealerList('');
-  }
-  redirect_next() {
-      if (this.current_page < this.last_page) { this.current_page++; }
-      else { this.current_page = 1; }
-      this.getDealerList('');
-  }
-  
-  set_filter(data)
-  {
-      this.db.set_filters(data);
-  }
-  current1()
-  {
-      this.current_page = 1;
-      this.getDealerList('');
-  }
-  last1()
-  {
-      this.current_page = this.last_page;
-      this.getDealerList('');
-  }
-  
-  currentPage = () => {
-      if(this.current_page < 1) {
-          this.current_page = 1;
-      }else if (this.current_page > this.last_page) {
-          this.current_page = this.last_page;
-      }
-      this.getDealerList('');
-  }
-
-
-  total_wallet_point:any = 0;
-
-  getDealerList(action:any) 
+    
+    ngOnInit() {
+        this.get_dealer_type();
+        this.getDealerList(''); 
+        this.AssignSaleUser();
+    }
+    
+    openDatePicker(picker : MatDatepicker<Date>)
+    {
+        picker.open();
+    }
+    redirect_previous() {
+        this.current_page--;
+        this.getDealerList('');
+    }
+    redirect_next() {
+        if (this.current_page < this.last_page) { this.current_page++; }
+        else { this.current_page = 1; }
+        this.getDealerList('');
+    }
+    
+    set_filter(data)
+    {
+        this.db.set_filters(data);
+    }
+    current1()
+    {
+        this.current_page = 1;
+        this.getDealerList('');
+    }
+    last1()
+    {
+        this.current_page = this.last_page;
+        this.getDealerList('');
+    }
+    
+    total_wallet_point:any = 0;
+    
+    getDealerList(action:any) 
     {
         console.log(this.filter);
         this.loading_list = true;
+        this.filter.date = this.filter.date  ? this.db.pickerFormat(this.filter.date) : '';
         this.filter.date = this.filter.date  ? this.db.pickerFormat(this.filter.date) : '';
         if( this.filter.date)this.filtering = true;
         this.filter.mode = 0;
@@ -134,12 +126,53 @@ export class DealerListComponent implements OnInit {
             }
         });
     }
+    
+    changeType(target, id, firm, user_type):void{
+        console.log('====================================');
+        console.log(target);
+        console.log(firm);
+        console.log(id);
+        console.log('====================================');
+        const dialogRef = this.alrt.open(ChangeTypeModalComponent, {
+            width: '500px',
+            data:{
+               'number':target,
+               'id':id,
+               'company_name':firm,
+               'user_type':user_type,
+            }
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            this.getDealerList('');
+        });
+    }
+    
+    wallet_asc = false;
+
+    sortByWallet(){
+        this.wallet_asc = !this.wallet_asc;
+        if(this.wallet_asc){
+            this.filter.sortBy = {
+                "sorting_order": "asc"
+            }
+            this.getDealerList('');
+        }
+        else if (!this.wallet_asc){
+            this.filter.sortBy = {
+                "sorting_order": "desc"
+            }
+            this.getDealerList('');
+        }
+    }
+    
+ 
     exportDealer()
     {
         this.filter.mode = 1;
         this.db.post_rqst(  {'filter': this.filter , 'login':this.db.datauser,user_type:'2'}, 'karigar/exportKarigar')
         .subscribe( d => {
-            document.location.href = this.db.myurl+'/app/uploads/exports/Retailer.csv';
+            document.location.href = this.db.myurl+'/app/uploads/exports/Architects.csv';
             console.log(d);
         });
     }
@@ -253,7 +286,7 @@ export class DealerListComponent implements OnInit {
             }
         });
     }
-
+    
     opensendnitification(user):void{
         const dialogRef = this.alrt.open(SendNotificationComponent, {
             width: '500px',

@@ -21,17 +21,14 @@ export class RedeemRequestDetailComponent implements OnInit {
   last_page: number ;
   current_page = 1;
   search: any = '';
+  uploadUrl:any ='';
   filter:any = {};
   filtering : any = false;
-  logs:any=[];
-  giftImg:any='';
-  uploadUrl:any;
-  discriptions:any;
-  shipped_type:any;
   
   constructor(public db: DatabaseService, private route: ActivatedRoute, private router: Router, public ses: SessionStorage,
     public matDialog: MatDialog,  public dialog: DialogComponent,  public alrt:MatDialog) {
-      this.uploadUrl = db.uploadUrl
+
+      this.uploadUrl = db.uploadUrl;
     }
     
     ngOnInit() {
@@ -54,16 +51,7 @@ export class RedeemRequestDetailComponent implements OnInit {
         this.loading_list = false;
         console.log(d);
         this.getData = d.redeem;
-        this.giftImg = d.redeem.gift_images;
-        this.logs=d['redeem']['logs'];
-        this.shipped_type = d['shipped_type']
-        this.discriptions = d['redeem']['shipping_information']
-        console.log("dis -======>",this.discriptions);
-        
-        console.log(this.logs);
-        console.log('-------------------------- Gift Images --------------------');
-        console.log(this.getData);
-        console.log('------------------------------------------------------------');
+        console.log( this.getData);
         this.coupan = d.coupon;
       });
     }
@@ -93,72 +81,7 @@ export class RedeemRequestDetailComponent implements OnInit {
         this.redeem_coupon = d.redeem_coupon.data;
       });
     }
-    // scanned_coupon:any=[];
-    // getScannedList() 
-    //   {
-    //     this.loading_list = false;
-    //     this.filter.date = this.filter.date  ? this.db.pickerFormat(this.filter.date) : '';
-    //     this.filter.used_date = this.filter.used_date  ? this.db.pickerFormat(this.filter.used_date) : '';
-    //     this.filter.end_date = this.filter.end_date  ? this.db.pickerFormat(this.filter.end_date) : '';
-    //     if( this.filter.date || this.filter.location_id || this.filter.used_date || this.filter.end_date)this.filtering = true;
     
-    //     this.filter.redeem_id = this.redeem_id;
-    //     this.db.post_rqst(  {  'filter': this.filter}, 'offer/couponScannedList')
-    //       .subscribe( d => {
-    //         console.log(d);
-    
-    //         this.current_page = d.scanned_coupon.current_page;
-    //         this.last_page = d.scanned_coupon.last_page;
-    //         this.scanned_coupon = d.scanned_coupon.data;
-    
-    //         // this.coupan_available = d.coupan_available;
-    //         // this.coupon_scanned = d.coupon_scanned;
-    //         // this.coupon_redeem = d.coupon_redeem;
-    //         this.loading_list = true;
-    
-    //         console.log( this.scanned_coupon );
-    //         console.log(d);
-    
-    
-    //       });
-    
-    
-    //   }
-    
-    
-    
-    // openDialog() {
-    //   const dialogRef = this.dialog.open( GiftRedeemModuleComponent,
-    
-    //     {
-    //       width: '724px',
-    //       height:'400px',
-    //       data: {}
-    //     }
-    //     );
-    
-    //     dialogRef.afterClosed().subscribe(result => {
-    //       console.log(`Dialog result: ${result}`);
-    //     });
-    
-    //   }
-    
-    
-    //   openDialogs() {
-    //     const dialogRef = this.dialog.open( TransferCodeComponent,
-    
-    //       {
-    //         width: '400px',
-    
-    //         data: {}
-    //       }
-    //       );
-    
-    //       dialogRef.afterClosed().subscribe(result => {
-    //         console.log(`Dialog result: ${result}`);
-    //       });
-    
-    //     }
     step = 0;
     setStep(index: number) {
       this.step = index;
@@ -192,15 +115,11 @@ export class RedeemRequestDetailComponent implements OnInit {
 
           }
 
-          openDialog(reedem_id ,string) {
-            // console.log(reedem_id);
+          openDialog(img) {
             const dialogRef = this.alrt.open(ProductImageModuleComponent,
               {
-                // width: '500px',
-                // height:'500px',
                 data: {
-                  'reedem_id' : reedem_id,
-                  'mode' : string,
+                  'img' : img,
                 }
               });
               dialogRef.afterClosed().subscribe(result => {
@@ -208,20 +127,7 @@ export class RedeemRequestDetailComponent implements OnInit {
               });
             }
 
-            openDialogImage(offer_gift_id ,string ) {
-              const dialogRef = this.alrt.open(ProductImageModuleComponent,
-                {
-                  // width: '500px',
-                  // height:'500px',
-                  data: {
-                    'id' : offer_gift_id,
-                    'mode' : string,
-                  }
-                });
-                dialogRef.afterClosed().subscribe(result => {
-                  console.log(`Dialog result: ${result}`);
-                });
-              }
+         
       
   }
   

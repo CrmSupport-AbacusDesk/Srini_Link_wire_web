@@ -80,15 +80,6 @@ export class OfferListComponent implements OnInit {
         this.getOfferList('');
     }
     
-
-    currentPage = () => {
-        if(this.current_page < 1) {
-            this.current_page = 1;
-        }else if (this.current_page > this.last_page) {
-            this.current_page = this.last_page;
-        }
-        this.getOfferList('');
-    }
     
     getOfferList(action) 
     {
@@ -181,8 +172,7 @@ export class OfferListComponent implements OnInit {
             console.log('false');
             
             const dialogRef = this.alrt.open(DeactiveStatusComponent,{
-                width: '400px',
-                height:'400px',
+                width: '500px',
                 
                 data: {
                     'id' : this.offer[i].id,

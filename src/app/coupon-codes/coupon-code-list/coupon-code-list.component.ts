@@ -1,4 +1,3 @@
-import { ManualAssignModelComponent } from './../manual-assign-model/manual-assign-model.component';
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator, MatTableDataSource} from '@angular/material';
 import {DatabaseService} from '../../_services/DatabaseService';
@@ -9,6 +8,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { SessionStorage } from 'src/app/_services/SessionService';
 import { CouponCodeModalComponent } from '../coupon-code-modal/coupon-code-modal.component';
 import { MastetDateFilterModelComponent } from 'src/app/mastet-date-filter-model/mastet-date-filter-model.component';
+import { ManualAssignModelComponent } from '../manual-assign-model/manual-assign-model.component';
+
 
 @Component({
     selector: 'app-coupon-code-list',
@@ -25,10 +26,10 @@ export class CouponCodeListComponent implements OnInit {
     search: any = '';
     searchData = true;
     filter:any = {};
-    perPage=0;
     filtering : any = false;
     redeem_coupon:any=[];
-    scannedcoupon:any=[];
+    perPage=0;
+    
     coupon_all:any =0;
     coupon_available_count : any = 0;
     coupon_scanned_count : any = 0;
@@ -86,21 +87,7 @@ export class CouponCodeListComponent implements OnInit {
         else { this.current_page = 1; }
         this.getcodeSummaryist('');
     }
-    redirect_previous5() {
-        this.current_page--;
-        this.getCompanyCoupon('');
-    }
-    redirect_next5() {
-        if (this.current_page < this.last_page) { this.current_page++; }
-        else { this.current_page = 1; }
-        this.getCompanyCoupon('');
-    }
     
-    currentPage = () => {
-        if(this.current_page < 1) { this.current_page = 1; }
-        else if (this.current_page > this.last_page) { this.current_page = this.last_page}
-        this.getAvailableCoupanList('');
-    }
     avialable_coupon_count:any=0;
     redeem_coupon_count:any=0;
     sccaned_coupon_count:any=0;
@@ -148,37 +135,8 @@ export class CouponCodeListComponent implements OnInit {
         this.current_page = this.last_page;
         this.getcodeSummaryist('');
     }
-    current5()
-    {
-        this.current_page = 1;
-        this.getCompanyCoupon('');
-    }
-    last5()
-    {
-        this.current_page = this.last_page;
-        this.getCompanyCoupon('');
-    }
-    total_company_scan:any=0;
-    scanned_coupons_codes()
-    {
-        this.loading_list = true;
-        this.filtering = false;
-        this.filter.date = this.filter.date  ? this.db.pickerFormat(this.filter.date) : '';
-        this.filter.scan_date = this.filter.scan_date  ? this.db.pickerFormat(this.filter.scan_date) : '';
-        if( this.filter.date || this.filter.scan_date  || this.filter.search || this.filter.coupon_code)this.filtering = true;
-        this.filter.mode = 0;
-
-        this.loading_list = true;
-        this.db.post_rqst(  {'filter': this.filter , 'login':this.db.datauser},'offer/scannedCompanyCouponList?page=' + this.current_page)
-        .subscribe( d => {
-            this.loading_list = false;
-            console.log(d);
-            this.scannedcoupon=d.scanned_company_coupon.data;
-            this.total_company_scan=d.scanned_company_coupon.total;
-            console.log(this.scannedcoupon);
     
-        });
-    }
+    avialableValue:any
     getAvailableCoupanList(action) 
     {
         this.loading_list = true;
@@ -202,16 +160,20 @@ export class CouponCodeListComponent implements OnInit {
             this.last_page = d.avialable_coupon.last_page;
             this.total_coupon =d.avialable_coupon.total;
             this.coupon = d.avialable_coupon.data;
-            
+            this.avialableValue = d.total_points;
             this.avialable_coupon_count = d.avialable_coupon.total;
             this.redeem_coupon_count = d.coupon_redeem_count;
             this.sccaned_coupon_count = d.coupon_scanned_count;
+
             this.perPage = d.avialable_coupon.per_page;
+            // console.log( this.perPage);
+            
             // commented
             // this.total_available_coupon_value = d.total_available_coupon_value.total_coupon_value;
             this.sr_no = this.current_page - 1;
-            this.sr_no = this.sr_no * this.perPage;     
-             
+            this.sr_no = this.sr_no * this.perPage;    
+            console.log(this.sr_no);
+              
         });
     }
     
@@ -226,6 +188,7 @@ export class CouponCodeListComponent implements OnInit {
         });
     }
     scanned_coupon:any=[];
+    scanValue:any;
     total_scanned_coupon:any={};
     total_scanned_coupon_value:any = 0;
     getScannedList(action) 
@@ -246,6 +209,7 @@ export class CouponCodeListComponent implements OnInit {
         .subscribe( d => {
             this.loading_list = false;
             console.log(d);
+            this.scanValue = d.total_points;
             this.current_page = d.scanned_coupon.current_page;
             this.last_page = d.scanned_coupon.last_page;
             this.total_scanned_coupon =d.scanned_coupon.total;
@@ -253,6 +217,9 @@ export class CouponCodeListComponent implements OnInit {
             this.sccaned_coupon_count = d.scanned_coupon.total;
             this.redeem_coupon_count = d.coupon_redeem_count;
             this.avialable_coupon_count = d.coupon_available_count;
+
+
+            
             // this.total_scanned_coupon_value = d.total_scanned_coupon_value.total_coupon_value;
         });
     }
@@ -285,88 +252,13 @@ export class CouponCodeListComponent implements OnInit {
             // this.total_scanned_coupon_value = d.total_scanned_coupon_value.total_coupon_value;
         });
     }
-
-
-    companyCoupon:any=[];
-    total_company_coupon:any=0;
-    getCompanyCoupon(action) 
-    {
-        this.loading_list = true;
-        this.filter.date = this.filter.date  ? this.db.pickerFormat(this.filter.date) : '';
-        this.filter.scan_date = this.filter.scan_date  ? this.db.pickerFormat(this.filter.scan_date) : '';
-        this.filter.end_date = this.filter.end_date  ? this.db.pickerFormat(this.filter.end_date) : '';
-        if( this.filter.date || this.filter.scan_date || this.filter.end_date  || this.filter.search || this.filter.coupon_code || this.filter.offer_title || this.filter.points || this.filter.mobile || this.filter.used_by)this.filtering = true;
-        this.filter.mode = 0;
-        
-        if(action=='refresh')
-        {
-            this.filter ={};
-        }
-        
-        this.db.post_rqst(  {  'filter': this.filter , 'login':this.db.datauser}, 'offer/companyCouponList?page=' + this.current_page)
-        .subscribe( d => {
-            this.loading_list = false;
-            console.log(d);
-            this.current_page = d.company_coupon.current_page;
-            this.last_page = d.company_coupon.last_page;
-            this.total_scanned_coupon =d.company_coupon.total;
-            this.companyCoupon = d.company_coupon.data;
-            this.total_company_coupon = d.company_coupon.total;
-            this.current_page = d.company_coupon.current_page;
-            this.last_page = d.company_coupon.last_page;
-            this.total_coupon =d.company_coupon.total;
-            this.perPage = d.company_coupon.per_page;
-            // this.redeem_coupon_count = d.coupon_redeem_count;
-            // this.avialable_coupon_count = d.coupon_available_count;
-            this.sr_no = this.current_page - 1;
-            this.sr_no = this.sr_no * this.perPage;   
-            console.log( this.sr_no);
-            
-        });
-    }
-
-
-    companyCouponExport()
-    {
-        this.filter.mode = 1;
-        this.db.post_rqst(  {'filter': this.filter , 'login':this.db.datauser}, 'offer/exportCompanyCouponList')
-        .subscribe( d => {
-            this.loading_list = false;
-            document.location.href = this.db.myurl+'/app/uploads/exports/company-coupon-code.csv';
-            console.log(d);
-        });
-    }
-
-    companyScanCouponExport()
-    {
-        this.filter.mode = 1;
-        this.db.post_rqst(  {'filter': this.filter , 'login':this.db.datauser}, 'offer/exportCompanyScannedCouponList')
-        .subscribe( d => {
-            this.loading_list = false;
-            document.location.href = this.db.myurl+'/app/uploads/exports/company-scanned-coupon-code.csv';
-            console.log(d);
-        });
-    }
-
-
-
-    exportKarigarCouponList()
+    exportScannedCouponList()
     {
         this.filter.mode = 1;
         this.db.post_rqst(  {'filter': this.filter , 'login':this.db.datauser}, 'offer/exportScannedCouponList')
         .subscribe( d => {
             this.loading_list = false;
-            document.location.href = this.db.myurl+'app/uploads/exports/scanned-by-karigar.csv';
-            console.log(d);
-        });
-    }
-    exportRetailerCouponList()
-    {
-        this.filter.mode = 1;
-        this.db.post_rqst(  {'filter': this.filter , 'login':this.db.datauser}, 'offer/exportRetailerScannedCouponList')
-        .subscribe( d => {
-            this.loading_list = false;
-            document.location.href = this.db.myurl+'app/uploads/exports/scanned-by-retailer.csv';
+            document.location.href = this.db.myurl+'app/uploads/exports/scanned-coupon-list.csv';
             console.log(d);
         });
     }
@@ -416,6 +308,7 @@ export class CouponCodeListComponent implements OnInit {
     getcodeSummaryist(action) 
     {
         this.loading_list = true;
+        this.filter.date = this.filter.date  ? this.db.pickerFormat(this.filter.date) : '';
         this.filter.mode = 0;
         
         if(action=='refresh')
@@ -437,7 +330,7 @@ export class CouponCodeListComponent implements OnInit {
         let codes = [];
         for(let i=0;i<this.coupon_code_summary.length;i++)
         {
-            codes.push({'S.No':i+1,'Date':this.coupon_code_summary[i].date_created,'Offer':'Offer Id #'+ this.coupon_code_summary[i].offer_id, 'Total Coupon':this.coupon_code_summary[i].total_coupon,'Total Coupon Value': this.coupon_code_summary[i].total_coupon_value,'First coupon':this.coupon_code_summary[i].first_coupon_code,'Last coupon':this.coupon_code_summary[i].last_coupon_code});
+            codes.push({'S.No':i+1,'Date':this.coupon_code_summary[i].date_created,'Offer':'Offer Id #'+ this.coupon_code_summary[i].offer_id, 'Total Coupon':this.coupon_code_summary[i].total_coupon,'First coupon':this.coupon_code_summary[i].first_coupon_code,'Last coupon':this.coupon_code_summary[i].last_coupon_code});
         }
         this.db.exportAsExcelFile(codes, 'Coupon Code Summary');
     }
@@ -529,22 +422,4 @@ export class CouponCodeListComponent implements OnInit {
             }
         });
       } 
-
-
-      couponCodeModal(target, val) 
-      {   console.log(target);
-      
-          const dialogRef = this.alrt.open(CouponCodeModalComponent,{
-              width: '800px',
-              disableClose:true,
-              data: {
-                  'data':val,
-                  'target' :target,
-              }
-          });
-          dialogRef.afterClosed().subscribe(result => {
-            console.log(`Dialog result: ${result}`);
-            this.getCompanyCoupon('');
-        });
-      }
 }

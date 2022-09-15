@@ -35,9 +35,6 @@
             </mat-expansion-panel>
         </mat-accordion>
     </div>
-    <div class="add">
-        <button (click)="toggle = !toggle" mat-button class="add-btn"><i class="material-icons">add</i></button>
-    </div>
 </div>
 
 <div class="side-main" [ngClass] ="{'on' : toggle == true}">
@@ -68,3 +65,8 @@
     </div>
 </div>
 
+<div class="fab-btns">
+    <button mat-fab color="primary" (click)="toggle = !toggle">
+        <mat-icon>add</mat-icon>
+    </button>
+</div>

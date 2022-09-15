@@ -10,18 +10,22 @@ import {DialogComponent} from './../dialog/dialog.component';
 })
 export class HeaderComponent implements OnInit {
     
-    current_page : number = 1;
-    unread_feedback : number = 0;
-    filter: any = {};
+    filter : any = {};
+    pagelimit:any = 10;
+    last_page: number ;
+    current_page = 1;
     start:any = 0;
-    pagelimit:any = 100;
+    unreadFeedCount : number = 0;
+    pending_redeem_request_retailer : number = 0;
+    pending_redeem_request : number = 0;
 
 
     constructor(private renderer: Renderer2, private router: Router, public ses: SessionStorage, public db: DatabaseService , public dialog: DialogComponent) { }
     
     ngOnInit() {
-        this.get_abacus_con();   
-        this.updateUnreadFeeds();     
+        this.get_abacus_con(); 
+        this.get_counts();
+        this.getUnreadFeedbackCount()       
     }
     
     status:boolean = false;
@@ -54,16 +58,36 @@ export class HeaderComponent implements OnInit {
         window.open("http://crmsupport.abacusdesk.com/projecttaskdetail/djBmSjN1bUZQT0hpOXZnZjB5Q2pPUT09","_blank");
     }
     
-    updateUnreadFeeds = () => {
-        this.filter.msg_status = 'Unread';
-        this.filter.date = '';
-        this.db.post_rqst({'filter': this.filter},'offer/feedback_list?page=' + this.current_page)
+
+    get_counts() 
+    {
+        
+        this.db.post_rqst({ }, 'master/getDashboardcounts').subscribe(resp => 
+            {
+               
+                this.pending_redeem_request_retailer=resp.pending_architect_code;
+                this.pending_redeem_request = resp.pending_redeem_request;
+               
+            });
+        }
+
+    getUnreadFeedbackCount = () => {
+        this.db.post_rqst({'filter': this.filter,'start':this.start,'pagelimit':this.pagelimit },'offer/feedback_list?page=' + this.current_page)
         .subscribe( resp => {
-            console.log('----------------- Feedback Count --------------------');
-            console.log(resp);
-            console.log('------------------------------------------------------')
-            this.unread_feedback =resp.unread_cn;
+            this.unreadFeedCount =resp.unread_cn;
+            
+            console.log('Unread Feed Count ->');
+            console.log(resp, this.unreadFeedCount);
+            console.log('---------------------');
         });
-    };
-    // show_actions:any={};
+    }
+
+    refershCount = () => {
+        this.getUnreadFeedbackCount();
+        this.get_counts();
+    }
+
+
+    show_actions:any={};
+    
 }

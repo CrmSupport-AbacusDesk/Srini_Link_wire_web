@@ -73,23 +73,16 @@ deleteImage(id) {
       this.loginBanners();
     });
  }
- openDialog(id ,string ) {
-  console.log(id);
-  
+ openDialog(img) {
   const dialogRef = this.alrt.open(ProductImageModuleComponent,
-
     {
-      
       data: {
-        'id' : id,
-        'mode' : string,
+        'img' : img,
       }
     });
-
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
     });
-
   }
 
 

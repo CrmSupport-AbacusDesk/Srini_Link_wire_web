@@ -28,16 +28,16 @@ export class KarigarDetailComponent implements OnInit {
     last_page: number ;
     current_page = 1;
     search: any = '';
-    uploadUrl:any='';
     previousUrl:any='';
+    uploadUrl:any =''
     mindate :any = new Date();  
+    retailer_count: any={};
     constructor(public db: DatabaseService, private route: ActivatedRoute, private router: Router, public ses: SessionStorage,public dialog: DialogComponent, public alrt:MatDialog ) {
-        console.log(router);
+        this.uploadUrl = db.uploadUrl;
     }
     
     mode:any=1;
     ngOnInit() {
-        this.uploadUrl = this.db.uploadUrl;
         this.route.params.subscribe(params => {
             this.karigar_id = params['karigar_id'];
             this.page_number = params['page'];
@@ -48,6 +48,7 @@ export class KarigarDetailComponent implements OnInit {
                 this.getScannedList();
                 this.getReferral();
                 this.get_points_summry();
+                this. getAssignPlumber();
             }
         });
     }
@@ -162,7 +163,8 @@ export class KarigarDetailComponent implements OnInit {
     }
     
     referral_data:any=[];
-    
+    point_transfer:any=[];
+
     getReferral() 
     {
         this.loading_list = true;
@@ -173,8 +175,25 @@ export class KarigarDetailComponent implements OnInit {
             this.loading_list = false;
             console.log(d);
             this.referral_data = d.referal;
+            this.point_transfer = d.point_transfer;
         });
     }
+
+    assignplumber:any={};
+    getAssignPlumber()
+{
+    this.karigar_id = this.karigar_id;
+    this.db.post_rqst(  {  'plumber_id': this.karigar_id }, 'app_karigar/retailer_assign_plumber')
+    .subscribe( d => {
+        this.loading_list = false;
+        console.log(d);
+        this.assignplumber = d.retailer_id;
+        this.retailer_count = d.retailer_count;
+    });
+}
+
+
+
 
     points_summry:any=[];
     get_points_summry() 
@@ -255,95 +274,96 @@ export class KarigarDetailComponent implements OnInit {
     prevStep() {
         this.step--;
     }
-    openDialog(id ,string ) {
-        const dialogRef = this.alrt.open(ProductImageModuleComponent,{
-            data: {
-                'id' : id,
-                'mode' : string,
-            }
-        });
-        dialogRef.afterClosed().subscribe(result => {
-            console.log(`Dialog result: ${result}`);
-        });
-    }
-    
-    changeStatus(id)
-    {
-        const dialogRef = this.alrt.open(ChangeKarigarStatusComponent,{
-            width: '500px',
-            height:'500px',
+    openDialog(img) {
+        const dialogRef = this.alrt.open(ProductImageModuleComponent,
+            {
+                data: {
+                    'img' : img,
+                }
+            });
+            dialogRef.afterClosed().subscribe(result => {
+                console.log(`Dialog result: ${result}`);
+            });
+        }
+        
+        changeStatus(id)
+        {
+            const dialogRef = this.alrt.open(ChangeKarigarStatusComponent,{
+                width: '500px',
+                height:'500px',
+                
+                data: {
+                    'id' : id,
+                }
+            });
+            dialogRef.afterClosed().subscribe(result => {
+                if( result ){
+                    this.getReedamList();
+                }
+            });
+        }
+        
+        requestchangeStatus(i,id,status)
+        {
+            console.log(status);
             
-            data: {
-                'id' : id,
-            }
-        });
-        dialogRef.afterClosed().subscribe(result => {
-            if( result ){
-                this.getReedamList();
-            }
-        });
-    }
-    
-    requestchangeStatus(i,id,status)
-    {
-        console.log(status);
-        
-        const dialogRef = this.alrt.open(ChangeStatusComponent,{
-            width: '500px',
-            height:'500px',
+            const dialogRef = this.alrt.open(ChangeStatusComponent,{
+                width: '500px',
+                height:'500px',
+                
+                data: {
+                    'id' : id,
+                    'status' : status,
+                }
+            });
+            dialogRef.afterClosed().subscribe(result => {
+                if( result ){
+                    this.getReedamList();
+                }
+            });
             
-            data: {
-                'id' : id,
-                'status' : status,
-            }
-        });
-        dialogRef.afterClosed().subscribe(result => {
-            if( result ){
-                this.getReedamList();
-            }
-        });
+        }
         
-    }
-    
-    balanceModel(id)
-    {
-        const dialogRef = this.alrt.open(KarigarBalanceModelComponent,{
-            width: '650px',
-            data: {
-                'id' : id,
-            }
-        });
-        dialogRef.afterClosed().subscribe(result => {
-            console.log(`Dialog result: ${result}`);
-        });
-    }
-    
-    coupon_summary(id) 
-    {   
-        const dialogRef = this.alrt.open(ReedemCouponSummaryComponent,{
-            width: '800px',
-            data: {
-                'id':id,
-            }
-        });
-        dialogRef.afterClosed().subscribe( r => {
-            if( r ) this.getReedamList();
-        });
-    }
-    
-    openBonusPoint(): void {
-        console.log(this.getData);
+        balanceModel(id)
+        {
+            const dialogRef = this.alrt.open(KarigarBalanceModelComponent,{
+                width: '650px',
+                data: {
+                    'id' : id,
+                }
+            });
+            dialogRef.afterClosed().subscribe(result => {
+                console.log(`Dialog result: ${result}`);
+            });
+        }
         
-        const dialogRef = this.alrt.open(BonusPointModelComponent, {
-            width: '500px',
-            data:{
-                karigar:this.getData
-            }
-        });
-        dialogRef.afterClosed().subscribe( r => {
-            this.getKarigarDetails();
-            this.getScannedList();
-            this.get_points_summry();
-        });
+        coupon_summary(id) 
+        {   
+            const dialogRef = this.alrt.open(ReedemCouponSummaryComponent,{
+                width: '800px',
+                data: {
+                    'id':id,
+                }
+            });
+            dialogRef.afterClosed().subscribe( r => {
+                if( r ) this.getReedamList();
+            });
+        }
+        
+        openBonusPoint(): void {
+            console.log(this.getData);
+            
+            const dialogRef = this.alrt.open(BonusPointModelComponent, {
+                width: '500px',
+                data:{
+                    karigar:this.getData
+                }
+            });
+            dialogRef.afterClosed().subscribe( r => {
+                this.getKarigarDetails();
+                this.getScannedList();
+                this.get_points_summry();
+            });
+        }
     }
-}
+    

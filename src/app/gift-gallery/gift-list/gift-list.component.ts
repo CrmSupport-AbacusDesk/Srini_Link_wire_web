@@ -38,7 +38,9 @@ export class GiftListComponent implements OnInit {
     gift_point : any = 0;
     gift_all : any = 0;
     
-    constructor(public db: DatabaseService, private route: ActivatedRoute, private router: Router, public ses: SessionStorage,public dialog: DialogComponent, public alrt:MatDialog ) {}
+    
+    constructor(public db: DatabaseService, private route: ActivatedRoute, private router: Router, public ses: SessionStorage,public dialog: DialogComponent, public alrt:MatDialog ) {
+    }
     
     ngOnInit() {
         this.uploadUrl = this.db.uploadUrl;
@@ -72,15 +74,6 @@ export class GiftListComponent implements OnInit {
         this.getGiftList('');
     }
     
-
-    currentPage = () => {
-        if(this.current_page < 1) {
-            this.current_page = 1;
-        }else if (this.current_page > this.last_page) {
-            this.current_page = this.last_page;
-        }
-        this.getGiftList('');
-    }
     
     getGiftList(action) 
     {
@@ -192,18 +185,19 @@ export class GiftListComponent implements OnInit {
             this.getGiftList('');
         });
     }
-    openDialog(id ,string ) {
-        const dialogRef = this.alrt.open(ProductImageModuleComponent,{
-            data: {
-                'id' : id,
-                'mode' : string,
-            }
-        });
-        dialogRef.afterClosed().subscribe(result => {
-            console.log(`Dialog result: ${result}`);
-        });
-    }
+  
     
+    openDialog(img) {
+        const dialogRef = this.alrt.open(ProductImageModuleComponent,
+          {
+            data: {
+              'img' : img,
+            }
+          });
+          dialogRef.afterClosed().subscribe(result => {
+            console.log(`Dialog result: ${result}`);
+          });
+        }
     
     openDatepicker(): void {
         const dialogRef = this.alrt.open(MastetDateFilterModelComponent, {

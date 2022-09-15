@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator, MatTableDataSource} from '@angular/material';
 import {DatabaseService} from '../../_services/DatabaseService';
 import {DialogComponent} from '../../dialog/dialog.component';
@@ -54,7 +54,6 @@ export class RedeemRequestListComponent implements OnInit {
         }
         
         this.getReedamList('');
-        this.AssignSaleUser();
         
     }
     
@@ -82,16 +81,6 @@ export class RedeemRequestListComponent implements OnInit {
         this.current_page = this.last_page;
         this.getReedamList('');
     }
-
-    currentPage = () => {
-        if(this.current_page < 1) {
-            this.current_page = 1;
-        }else if (this.current_page > this.last_page){
-            this.current_page = this.last_page;
-        }
-        this.getReedamList('');
-    }
-
     getReedamList(action:any) 
     {
         this.loading_list = true;
@@ -136,28 +125,8 @@ export class RedeemRequestListComponent implements OnInit {
             console.log(d);
         });
     }
-    sales_users:any=[];
-    AssignSaleUser()
-    {
-        this.loading_list = true;
-        this.db.get_rqst(  '', 'karigar/sales_users')
-        .subscribe(d => {
-            this.loading_list = false;
-            console.log(d);
-            this.sales_users = d.sales_users;
-            console.log(this.sales_users);
-        });
-    }
-    deleteOffer(id) {
-        // this.dialog.delete('Karigar').then((result) => {
-        //   if(result) {
-        // let id;
-        this.db.post_rqst({'id': id}, 'reedam/remove')
-        .subscribe(d => {
-            console.log(d);
-            this.getReedamList('');
-        });
-    }
+
+    
     //   });
     // } 
     
@@ -180,37 +149,19 @@ export class RedeemRequestListComponent implements OnInit {
             }
         });
     }
-
-
-    karigarsSatus(i,type) {
-        console.log(type);
-        
-        
-        if(this.reedam[i].receive_status == 'Shipped' || this.reedam[i].receive_status == 'Transfered')
-        {
-            this.shippedModel(i, type);
-            return;
-        }
-        
-        this.giftStatus(i);
-        
-    }
     
     
-    
-    shippedModel(i,type){
+    shippedModel(i, type){
         console.log('====================================');
         console.log(type);
         console.log('====================================');
-        
         const dialogRef = this.alrt.open(ShippedDetailModelComponent,{
             width: '500px',
             
             data: {
                 id:  this.reedam[i].id ,
+                'payment_type': type,
                 karigar_id:this.reedam[i].karigar_id,
-                'redeem_type': type,
-                paymentnumber:this.reedam[i].payment_number,
             }
         });
         dialogRef.afterClosed().subscribe(result => {
@@ -224,40 +175,17 @@ export class RedeemRequestListComponent implements OnInit {
         
     }
     
-    paymentSatus(i) {
+    karigarsSatus(i, type) {
+        console.log(type);
         
-        if(this.reedam[i].receive_status == 'Transfer')
+        
+        if(this.reedam[i].receive_status == 'Transfer' || this.reedam[i].receive_status == 'Shipped')
         {
-            
-            this.dialog.paymentAlert(this.reedam[i].gift_points).then((result) => {
-                if(result) {
-                    this.db.post_rqst({ 'receive_status' : this.reedam[i].receive_status, 'id' : this.reedam[i].id }, 'offer/redeemReceiveStatus')
-                    .subscribe(d => {
-                        this.dialog.success('Success!');
-                        this.getReedamList('');
-                    });
-
-
-                    // this.db.post_rqst({ id : id}, 'offer/remove')
-                    // .subscribe(d => {
-                    //     if(d.status == 'EXIST')
-                    //     {
-                    //         this.dialog.warning('Offer is in use');
-                    //         return;
-                    //     }
-                    //     console.log(d);
-                    //     this.getOfferList('');
-                    //     this.dialog.successfully();
-                    // });
-                }
-                else{
-                    this.getReedamList('');
-                }
-            });
-
+            this.shippedModel(i, type);
+            return;
         }
         
-        
+        this.giftStatus(i);
         
     }
     
@@ -290,5 +218,7 @@ export class RedeemRequestListComponent implements OnInit {
         });
     }
     
+
+    @Input() count: string;
     
 }

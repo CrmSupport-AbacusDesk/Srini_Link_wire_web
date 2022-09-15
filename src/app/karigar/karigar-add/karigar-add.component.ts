@@ -11,7 +11,7 @@ import {MatPaginator, MatTableDataSource, MatDialog, MatDatepicker} from '@angul
     templateUrl: './karigar-add.component.html',
 })
 export class KarigarAddComponent implements OnInit {
-    docId:any;
+    
     loading_list = false;
     karigarform: any = {};
     savingData = false;
@@ -21,16 +21,13 @@ export class KarigarAddComponent implements OnInit {
     pincodes: any = [];
     karigar_id:any;
     date1:any;
-    uploadUrl:any='';
     
     
     constructor(public db: DatabaseService, private route: ActivatedRoute, private router: Router, public ses: SessionStorage,public matDialog: MatDialog,  public dialog: DialogComponent) { this.date1 = new Date();}
     
     ngOnInit() {
-        this.uploadUrl = this.db.uploadUrl;
         this.route.params.subscribe(params => {
             this.karigar_id = params['karigar_id'];
-            this.docId = params['karigar_id'];
             
             if (this.karigar_id)
             {
@@ -149,11 +146,11 @@ export class KarigarAddComponent implements OnInit {
             this.loading_list = false;
             console.log( d );
             if(d['status'] == 'EXIST' ){
-                this.dialog.error( 'Email or Mobile No. exists');
+                this.dialog.error( ' Mobile No. already exists');
                 return;
             }
             this.router.navigate(['karigar-list/1']);
-            this.dialog.success('Karigar has been successfully added');
+            this.dialog.success('Plumber has been successfully added');
         });
     }
     sales_users:any=[];
@@ -190,7 +187,6 @@ export class KarigarAddComponent implements OnInit {
             const reader = new FileReader();
             reader.onload = this.handleReaderLoaded.bind(this);
             reader.readAsBinaryString(file);
-            this.docId = '';
         }
     }
     handleReaderLoaded(e) {

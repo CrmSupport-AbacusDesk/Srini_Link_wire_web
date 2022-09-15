@@ -12,6 +12,7 @@ import {ChangeStatusComponent} from '../../gift-gallery/change-status/change-sta
 import { ReedemCouponSummaryComponent } from '../../karigar/reedem-coupon-summary/reedem-coupon-summary.component';
 import { ReopenRemarkModleComponent } from 'src/app/offer/reopen-remark-modle/reopen-remark-modle.component';
 import { BonusPointModelComponent } from '../../karigar/bonus-point-model/bonus-point-model.component';
+import { ContractorSatusModalComponent } from 'src/app/contractor/contractor-satus-modal/contractor-satus-modal.component';
 
 @Component({
   selector: 'app-dealer-detail',
@@ -31,15 +32,17 @@ export class DealerDetailComponent implements OnInit {
   current_page = 1;
   search: any = '';
   previousUrl:any='';
-  uploadUrl:any='';
-  mindate :any = new Date();  
+  uploadUrl:any =''
+  mindate :any = new Date(); 
+
   constructor(public db: DatabaseService, private route: ActivatedRoute, private router: Router, public ses: SessionStorage,public dialog: DialogComponent, public alrt:MatDialog ) {
       console.log(router);
+      this.uploadUrl = db.uploadUrl;
+
   }
   
   mode:any=1;
   ngOnInit() {
-    this.uploadUrl = this.db.uploadUrl;
       this.route.params.subscribe(params => {
           this.karigar_id = params['dealer_id'];
 
@@ -50,7 +53,7 @@ export class DealerDetailComponent implements OnInit {
           if (this.karigar_id) {
               this.getKarigarDetails();
               this.getReedamList();
-              this.getScannedList();
+              this.myPointList();
               this.getReferral();
               this.get_points_summry();
           }
@@ -88,7 +91,38 @@ export class DealerDetailComponent implements OnInit {
       });
   }
   
+  per_page:any =0
   
+
+  myPoint:any =[];
+  totalCount:any =0;
+  contractor_id:any;
+  myPointList(){
+      this.loading_list = true;
+      this.loading_list = true;
+      this.filter.date_created = this.filter.date_created  ? this.db.pickerFormat(this.filter.date_created) : '';
+      this.filter.date = this.filter.date  ? this.db.pickerFormat(this.filter.date) : '';
+
+      if( this.filter.date)this.filtering = true;
+      this.filter.mode = 0;
+      
+      this.contractor_id = this.karigar_id;
+      
+      this.db.post_rqst( {'filter': this.filter, 'contractor_id':this.contractor_id}, 'app_karigar/get_contractor_request?page=' + this.current_page).subscribe( r =>
+          {
+              this.loading_list = false;
+              this.filter.mode = 1;
+              console.log(r);
+              console.log(r.request_list.data);
+              this.myPoint = r.request_list.data;
+              this.current_page = r.request_list.current_page;
+              this.last_page = r.request_list.last_page;
+              this.per_page = r.request_list.per_page;
+              this.totalCount = r.all_count;
+
+          });
+          
+      }
   
   coupandetail:any = [];
   couponDetail()
@@ -166,7 +200,10 @@ export class DealerDetailComponent implements OnInit {
       });
   }
   
+
+
   referral_data:any=[];
+  point_transfer:any=[];
   
   getReferral() 
   {
@@ -178,8 +215,20 @@ export class DealerDetailComponent implements OnInit {
           this.loading_list = false;
           console.log(d);
           this.referral_data = d.referal;
+          this.point_transfer = d.point_transfer;
+
       });
   }
+
+  
+
+
+
+
+
+
+
+
 
   points_summry:any=[];
   get_points_summry() 
@@ -260,17 +309,17 @@ export class DealerDetailComponent implements OnInit {
   prevStep() {
       this.step--;
   }
-  openDialog(id ,string ) {
-      const dialogRef = this.alrt.open(ProductImageModuleComponent,{
-          data: {
-              'id' : id,
-              'mode' : string,
-          }
+  openDialog(img) {
+    const dialogRef = this.alrt.open(ProductImageModuleComponent,
+      {
+        data: {
+          'img' : img,
+        }
       });
       dialogRef.afterClosed().subscribe(result => {
-          console.log(`Dialog result: ${result}`);
+        console.log(`Dialog result: ${result}`);
       });
-  }
+    }
   
   changeStatus(id)
   {
@@ -351,5 +400,28 @@ export class DealerDetailComponent implements OnInit {
           this.get_points_summry();
       });
   }
+
+      
+  modalOpen(target,data, id, type, point) {
+    console.log(data);
+    console.log(id);
+    
+    const dialogRef = this.alrt.open(ContractorSatusModalComponent,
+      {
+        width: '768px',
+        data: {
+          target,
+          data,
+          id, 
+          type,
+          point
+        }
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        this.getKarigarDetails();
+      });
+    }
+    
+
 }
 

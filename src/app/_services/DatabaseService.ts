@@ -13,25 +13,19 @@
     const EXCEL_EXTENSION = '.xlsx';
     import * as FileSaver from 'file-saver';
     
-
+    
+    
     @Injectable({ providedIn: 'root' })
     export class DatabaseService implements OnInit {
+
+        myurl = 'https://devcrm.abacusdesk.com/tirupatistructural/dd_api/';
+        uploadUrl = "https://devcrm.abacusdesk.com/tirupatistructural/dd_api/app/uploads/";
         
-        myurl = 'https://devcrm.abacusdesk.com/konceptled/dd_api/';
-        uploadUrl = "https://devcrm.abacusdesk.com/konceptled/dd_api/app/uploads/";
-        
-        // local
-        // myurl = 'http://localhost/advance_api/';
-        // uploadUrl = "http://localhost/advance_api/app/uploads/";
-        
-        //cloneed
-        // myurl = 'http://phpstack-83335-1175063.cloudwaysapps.com/dd_api/';
-        // uploadUrl = "http://phpstack-83335-1175063.cloudwaysapps.com/dd_api/app/uploads/";
+   
 
         can_active = '';
         datauser: any = {};
         loading: any;
-        
         customer_name: any;
         franchise_name: any;
         franchise_id;

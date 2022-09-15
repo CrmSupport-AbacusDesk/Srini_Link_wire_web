@@ -45,6 +45,16 @@ export class DashboardComponent implements OnInit {
     stateWiseKarigar:any=[];
     stateWiseDealer:any=[];
     stateWiseDistributor:any=[];
+    total_coupon_amount: any;
+    pending_couopn_amount: any;
+    coupon_amount_scan_by_karigar: any;
+    aniversary:any =[];
+    birthday:any =[];
+    birthday_karigar: any =[];
+    birthday_dealer: any =[];
+    aniversary_karigar:any =[];
+    aniversary_dealer: any =[];
+
     
     constructor(public db: DatabaseService, private router:Router) 
     {
@@ -57,6 +67,11 @@ export class DashboardComponent implements OnInit {
         this.state_wise_distributor();
         this.coupon_code_graph();
         this.get_scan_coupon_data();
+        this.showAnniversaryDealer();
+        // this.get_anni_dealer();
+        this.get_anni_karigars();
+        this.showBirthdayDealer();
+        this.showBirthdayCarpenter();
     }
     
     ngOnInit() 
@@ -74,10 +89,16 @@ export class DashboardComponent implements OnInit {
                 console.log(resp);
                 this.balance_coupon_value = resp.balance_coupon_value;
                 this.karigars = resp.karigars;
+                this.karigars = resp.karigars;
+
                 this.offer_karigar=resp.offer_karigar;
                 this.offer_Retailer=resp.offer_Retailer;
                 this.offer = resp.offer;
                 this.total_coupon_value=resp.total_coupon_value;
+                this.total_coupon_amount=resp.total_coupon_amount;
+                this.pending_couopn_amount=resp.pending_couopn_amount;
+                this.coupon_amount_scan_by_karigar=resp.coupon_amount_scan_by_karigar;
+
                 this.coupon_value_scan_by_Retailer=resp.coupon_value_scan_by_Retailer;
                 this.coupon_value_scan_by_karigar=resp.coupon_value_scan_by_karigar;
                 this.pending_redeem_request_karigar=resp.pending_redeem_request_karigar;
@@ -120,6 +141,46 @@ export class DashboardComponent implements OnInit {
             });
         }
         
+        get_anni_karigars()
+        {
+            this.loading_list = true;
+            console.log(this.loading_list);
+            
+            
+            this.db.post_rqst({ }, 'master/nextweekanniversarycarpenter')
+            .subscribe((resp) => 
+            {
+                this.loading_list = false;
+                console.log(resp);
+                this.aniversary= resp.next_anniversary;
+                console.log(this.aniversary_karigar);
+                
+            });
+        }
+
+
+        showAnniversaryDealer(){
+            this.loading_list = true;
+            this.db.post_rqst({},'master/nextweekanniversary')
+            .subscribe((resp)=>
+            {
+                this.loading_list = false;
+                this.aniversary= resp.next_anniversary;
+            });
+        }
+
+        showBirthdayDealer(){
+            this.loading_list = true;
+            this.db.post_rqst({},'master/nextweekbirthday')
+            .subscribe((resp)=>
+            {
+                this.loading_list = false;
+
+                console.log(resp);
+                this.birthday= resp.next_birthday;
+            });
+        }
+
         get_offer_balance_days()
         {
             this.loading_list = true;
@@ -149,7 +210,7 @@ export class DashboardComponent implements OnInit {
                 this.karigar_Source = {
                     "chart": {
                         "xAxisName": "States",
-                        "yAxisName": "Electrician",
+                        "yAxisName": "Plumber",
                         // "numberSuffix": "k",
                         "theme": "fusion",
                     },
@@ -214,6 +275,27 @@ export class DashboardComponent implements OnInit {
         showKarigarList=true;
         show_karigar_graph=true;
         show_dealer_graph=false;
+        karigar_anni_graph=true;
+        dealer_anni_graph=false;
+
+        karigar_birth_graph=true;
+        dealer_birth_graph=false;
+
+
+        KarigarAnniGraph(){
+            console.log("click");
+            this.karigar_anni_graph=true;
+            this.dealer_anni_graph=false;
+            this.get_anni_karigars();
+        }
+
+        DealerAnniGraph(){
+            console.log("click");
+            this.dealer_anni_graph=true;
+            this.karigar_anni_graph=false;
+            this.showAnniversaryDealer();
+        }
+
         showDealers(){
             console.log("click");
             this.showDealersList=true;
@@ -234,6 +316,31 @@ export class DashboardComponent implements OnInit {
             this.show_dealer_graph=true;
         }
         
+        KarigarBirthGraph(){
+            console.log("click");
+            this.karigar_birth_graph=true;
+            this.dealer_birth_graph=false;
+            this.showBirthdayCarpenter();
+        }
+
+        DealerBirthGraph(){
+            console.log("click");
+            this.dealer_birth_graph=true;
+            this.karigar_birth_graph=false;
+            this.showBirthdayDealer();
+        }
+
+        showBirthdayCarpenter(){
+            this.db.post_rqst({},'master/nextweekbirthdaycarpenter')
+            .subscribe((resp)=>
+            {
+                console.log(resp);
+                this.birthday= resp.next_birthday;
+            });
+        }
+      
+       
+
         total_coupon_code_data : any = [];
         scanned_coupon_code_data : any = [];
         total_coupon:any=[];
@@ -342,21 +449,16 @@ export class DashboardComponent implements OnInit {
         this.router.navigate(['coupon-code-list']);
     }
     
-
     goto_karigarsPage(action)
     {
         // this.router.navigate(['karigar-list']);
 
-        if(action === 'karigar'){   
+        if(action === 'Plumber'){   
             this.router.navigate(['karigar-list/1'],{queryParams:{mode:action}});
-        }else if(action === 'dealer'){
+        }else if(action === 'Retailer'){
             this.router.navigate(['dealer-list/1'],{queryParams:{mode:action}});
         }
     }
-    // goto_karigarsPage()
-    // {
-    //     this.router.navigate(['karigar-list']);
-    // }
     
     goto_productPage()
     {

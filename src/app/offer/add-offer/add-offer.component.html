@@ -20,7 +20,7 @@
                                                         <mat-label>Select User Type</mat-label>
                                                         <mat-select  [(ngModel)]="addOffer.user_type" name="user_type" #user_type="ngModel" required>
                                                             <mat-option value=""></mat-option>
-                                                            <mat-option value="Karigar">Electrician</mat-option>
+                                                            <mat-option value="Plumber">Plumber</mat-option>
                                                             <mat-option value="Retailer">Retailer</mat-option>
                                                         </mat-select>
                                                     </mat-form-field>  
@@ -86,17 +86,16 @@
                                                     <div class="heads">
                                                         <h2>OFFER BANNER</h2>
                                                     </div>
-                                                    <div class="padding10">
-                                                        <label class="banner-block">
-                                                          <input type="file" (change)="onUploadChange1($event)" style="display:none;"
-                                                          accept=".png, .jpg, .jpeg" required />
-                                                          <img [src]="addOffer.offer_banner" alt="" id="img">
-                                                          <div class="fix-label">
-                                                            <i class="material-icons add-file-icon">add</i>
-                                                            <h4>Upload Image</h4>
-                                                          </div>
-                                                        </label>
-                                                      </div>
+                                                    <div class="cs-checkboxs" style="height: 325px;">
+                                                        <div class="checkbox-outers image-inputes">
+                                                            <label>
+                                                                <input type="file" (change)="onUploadChange1($event)" style="display:none;" accept=".png, .jpg, .jpeg" required />
+                                                                <img  [src]="addOffer.offer_banner?addOffer.offer_banner:'../assets/default-image.png' " alt="" id="img">
+                                                                <h4>Upload Image</h4>
+                                                                <i class="material-icons add-file-icon" >add</i>
+                                                            </label>
+                                                        </div>
+                                                    </div>  
                                                 </div>
                                             </div>
                                         </div>
@@ -189,7 +188,7 @@
                                                 <div class="control-field">
                                                     <mat-form-field class="cs-input">
                                                         <mat-select placeholder="Gifts" [(ngModel)]="gift" [name]="'gift'" >
-                                                            <mat-option *ngFor = "let gifts of giftlisting" [value]="gifts">{{gifts.gift_title}}</mat-option>
+                                                            <mat-option *ngFor = "let gifts of giftlisting" [value]="gifts"  (click)="checkValue()">{{gifts.gift_title}}</mat-option>
                                                         </mat-select>
                                                     </mat-form-field>
                                                 </div>
@@ -207,8 +206,8 @@
                                                 </div>
                                             </div> -->
                                             
-                                            <div class="row mb15 mt15">
-                                                <div class="col-12">
+                                            <div class="row mb15 mt15"  >
+                                                <div class="col-12" *ngIf="btn_value">
                                                     <div class="save un-save " style="cursor:pointer">
                                                         <button mat-button  (click)="addgiftList()">ADD GIFT</button>
                                                     </div>
@@ -237,11 +236,15 @@
                                                                 <table>
                                                                     <tr *ngFor="let raw of giftList; let p = index">
                                                                         <td class="w50" style="border-right: 1px solid #D2D2D2;">
-                                                                            <div class="image-thum"><img src="{{uploadUrl+ raw.gift_image}}"></div>
+                                                                            <div class="image-thum"><img [src]="uploadUrl + raw.image" (click)="openDialog(uploadUrl + raw.image)"></div>
                                                                         </td>
                                                                         <td class="w150">{{ raw.gift_title }}</td>
                                                                         <td class="w100">{{ raw.coupon_points }}</td>
-                                                                        <td>{{ raw.gift_specification }}</td>
+                                                                        <td>
+                                                                            <p  [innerHTML]="raw.gift_specification"></p>
+                                                                            <!-- <p >{{raw.gift_specification}}</p>
+                                                                            <div [innerHTML]="raw.gift_specification"></div> -->
+                                                                        </td>
                                                                         <td class="w110 active">
                                                                             <div class="action-btns mt11 left-btn opcity-non">
                                                                                 <div class="dele-sec" style="cursor:pointer" mat-raised-button (click)="RemoveItem(p)">

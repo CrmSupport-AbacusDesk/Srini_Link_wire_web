@@ -72,65 +72,6 @@ export class DialogComponent implements OnInit {
         })
         
     }
-
-
-
-    close(msg:any=''){
-        
-        const swalWithBootstrapButtons = Swal.mixin({
-            customClass: {
-                confirmButton: 'btn btn-success',
-                cancelButton: 'btn btn-danger'
-            },
-            buttonsStyling: true
-        })
-        
-        return swalWithBootstrapButtons.fire({
-            title: 'Are you sure?',
-            text: "You want to close this!",
-            type: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Yes, Close',
-            cancelButtonText: 'No, cancel',
-            reverseButtons: true
-        }).then((result) => {
-            if (result.value) {
-                return true;
-            } else if (result.dismiss === Swal.DismissReason.cancel) {
-                return false;
-            }
-        })
-        
-    }
-
-
-    statusAlert(msg:any=''){
-        
-        const swalWithBootstrapButtons = Swal.mixin({
-            customClass: {
-                confirmButton: 'btn btn-success',
-                cancelButton: 'btn btn-danger'
-            },
-            buttonsStyling: true
-        })
-        
-        return swalWithBootstrapButtons.fire({
-            title: 'Are you sure?',
-            text: "You want to change status!",
-            type: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Yes',
-            cancelButtonText: 'No',
-            reverseButtons: true
-        }).then((result) => {
-            if (result.value) {
-                return true;
-            } else if (result.dismiss === Swal.DismissReason.cancel) {
-                return false;
-            }
-        })
-        
-    }
     
     successfully(){
         const Toast = Swal.mixin({
@@ -172,56 +113,10 @@ export class DialogComponent implements OnInit {
     error(msg: any) {
         this.snacker.open(msg, '', 
         {
-            duration: 3000, 
+            duration: 2000, 
             panelClass: ['error-snackbar'],
             horizontalPosition: this.horizontalPosition,
             verticalPosition: this.verticalPosition, 
         });
     }
-
-
-
-    paymentAlert(msg:any=''){
-        const swalWithBootstrapButtons = Swal.mixin({
-            customClass: {
-                confirmButton: 'btn btn-success',
-                cancelButton: 'btn btn-danger'
-            },
-            buttonsStyling: true
-        })
-        
-        return swalWithBootstrapButtons.fire({
-            title: 'Are you sure?',
-            text: "You want to transfer "+msg+"  rupees!",
-            type: 'question',
-            showCancelButton: true,
-            confirmButtonText: 'Yes',
-            cancelButtonText: 'No',
-            reverseButtons: true
-        }).then((result) => {
-            if (result.value) {
-                return true;
-            } else if (result.dismiss === Swal.DismissReason.cancel) {
-                return false;
-            }
-        })
-        
-    }
-
-
-    paymentSuccess(){
-        const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000
-        })
-        
-        Toast.fire({
-            type: 'success',
-            title: 'Record Deleted Successfully!'
-        })
-    }
-
-
 }

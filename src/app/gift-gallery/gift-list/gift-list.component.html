@@ -47,7 +47,7 @@
                     <li><p>Pages {{ current_page }} of {{ last_page }}</p></li>
                     <li><button mat-button  matTooltip="First Page" class="fisrt-btn" (click) = 'current1()'>First</button></li>
                     <li><button mat-button class="left-btn" (click) = 'redirect_previous()'><i class="material-icons">keyboard_arrow_left</i></button></li>
-                    <li><input type="text" placeholder="GO TO" [(ngModel)]="current_page"  (keyup.enter)="currentPage()"></li>
+                    <li><input type="text" placeholder="GO TO" [(ngModel)]="current_page"  (keyup.enter)="getGiftList('')"></li>
                     <li><button mat-button class="right-btn" (click) = 'redirect_next()'><i class="material-icons">keyboard_arrow_right</i></button></li>
                     <li><button mat-button  matTooltip="Last Page" class="last-btn" (click) = 'last1()'>Last</button></li>
                 </ul>
@@ -102,11 +102,11 @@
                             <th class="w60"></th>
                             <th>
                                 <div class="vaild-into">
-                                    <div class="search-form mr20">
+                                    <div class="search-form ">
                                         <input type="text" placeholder="Offer" [(ngModel)]="filter.offer_title"  (keyup.enter)="current_page = 1;getGiftList('')">
                                         <i class="material-icons">search</i>
                                     </div>
-                                    <div class="date-form wp-20 mr20" >
+                                    <div class="date-form ml10" >
                                         <i *ngIf="filter.end_date" class="material-icons" (click)="filter.end_date = '';getGiftList('') ">clear</i>
                                         
                                         <mat-form-field >
@@ -115,7 +115,6 @@
                                             <mat-datepicker #picker2></mat-datepicker>
                                         </mat-form-field>
                                     </div>
-                                    <div class="form-area">  <button mat-button class="go" (click)="getGiftList('')" >Go</button></div>
                                 </div>
                             </th>
                             <th class="w70"></th>
@@ -160,13 +159,9 @@
                         <td class="w60">
                             <div class="image-thum">
                                 <!-- <img [src]="val.image" (click)="openDialog( val.id,'test4')"> -->
-                                <div class="image-thum" *ngIf="val.gift_image!=''">
-                                    <img src="{{uploadUrl+val.gift_image}}" (click)="openDialog(val.id,'test4')">
+                                <div class="image-thum" >
+                                    <img [src]="uploadUrl+val.image" (click)="openDialog(uploadUrl + val.image)">
                                 </div>
-
-                                <!-- <div class="image-thum" *ngIf="val.gift_image==''">
-                                    <img [src]="val.image" (click)="openDialog(val.id,'test4')">
-                                </div> -->
                             </div>
                         </td>
                         <td ><a  routerLink="/offer-detail"  routerLink="/offer-detail/{{val.offer_id}}" class="blue">{{val.title}} #{{val.offer_code}}  </a> / {{val.end_date | date: 'dd MMM yyyy'}}</td>
@@ -176,7 +171,7 @@
                         <td class="w70 text-center Reject">{{val.gift_reject}}</td>
                         <td class="w70 text-center"><b>{{val.gift_all}}</b></td>
                         <td class="w100 text-center">
-                            <mat-slide-toggle  [name]="'gift_status'+i" [(ngModel)]="val.giftStatus" (change)="updateGiftStatus($event,val.id)"></mat-slide-toggle>
+                            <mat-slide-toggle [name]="'gift_status'+i" [(ngModel)]="val.giftStatus" (change)="updateGiftStatus($event,val.id)"></mat-slide-toggle>
                         </td>
                     </tr>
                 </table>
@@ -185,11 +180,6 @@
     </div>
     
     <div class="container-outer">
-        <div class="container">
-            <div class="row">
-                
-            </div>
-        </div>
         <div class="date-not" *ngIf="!loading_list && (filtering && gift.length == 0 )">
             <div class="no-img">
                 <img src="assets/result-not-found.png"> 
@@ -202,11 +192,10 @@
             
         </div>
     </div> 
-    <div class="excel-btn"  (click)="exportGift()" *ngIf="gift.length">
-        <div class="image-area">
-            <a>
-                <img src="assets/excel.svg">
-            </a>
-        </div>
-    </div>
+</div>
+
+<div class="fab-btns">
+    <button (click)="exportGift()" *ngIf="gift.length" mat-fab class="excel">
+        <img src="assets/excel.svg">
+    </button>
 </div>

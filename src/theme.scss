@@ -5,7 +5,7 @@
 
 
 $mat-primary: (
-500: #ed3237,
+500: #ec3237,
 contrast: (
 )
 );
@@ -33,21 +33,23 @@ $mytheme-theme: mat-light-theme($mytheme-primary, $mytheme-accent, $mytheme-warn
 
 @include angular-material-theme($mytheme-theme);
 
-
 :root {
-    --primary: #ed3237;
-    --primary-rgb: 215,31,21;
+    --primary: #ec3237;
+    --primary-rgb: 88,138,7;
     --primary-contrast: #ffffff;
     --primary-contrast-rgb: 255,255,255;
-    --primary-shade: #ed3237;
-    --primary-tint: #ed3237;
+    --primary-shade: #4d7906;
+    --primary-tint: #699620;
     
-    --secondary: #373435;
-    --secondary-rgb: 35,35,35;
+    --secondary: #ffffff;
+    --secondary-rgb: 46,94,162;
     --secondary-contrast: #ffffff;
     --secondary-contrast-rgb: 255,255,255;
-    --secondary-shade: #1f1f1f;
-    --secondary-tint: #393939;
+    --secondary-shade: #28538f;
+    --secondary-tint: #436eab;
+  
+  
+    
     
     --success: #158700;
     --success-rgb: 21,135,0;
@@ -108,5 +110,4 @@ $mytheme-theme: mat-light-theme($mytheme-primary, $mytheme-accent, $mytheme-warn
     --black-tint: #1a1a1a;
     
 }
-
 

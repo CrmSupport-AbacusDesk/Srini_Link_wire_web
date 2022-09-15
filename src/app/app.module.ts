@@ -1,6 +1,5 @@
 import { UploaddigitalcatComponent } from './uploaddigitalcat/uploaddigitalcat.component';
 import { CouponCodeMasterComponent } from './coupon-code-master/coupon-code-master.component';
-import { DigitallistComponent } from './digitallist/digitallist.component';
 import { ConvertArray } from './_Pipes/ConvertArray.pipe';
 import { StrReplace } from './_Pipes/StrReplace.pipe';
 import { Crypto } from './_Pipes/Crypto.pipe';
@@ -108,8 +107,11 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import {AddgiftComponent} from '../app/addgift/addgift.component';
 import {GiftsComponent} from '../app/gifts/gifts.component';
 import { AddCouponCodesComponent } from './coupon-codes/add-coupon-codes/add-coupon-codes.component';
-import { MasterTabComponent } from './master/master-tab/master-tab.component';
-import { SubcategoryListComponent } from './master/subcategory-list/subcategory-list.component';
+import { ContractorListComponent } from './contractor/contractor-list/contractor-list.component';
+import { ContractorSatusModalComponent } from './contractor/contractor-satus-modal/contractor-satus-modal.component';
+import { ChangeTypeModalComponent } from './change-type-modal/change-type-modal.component';
+import { MasterTabComponent } from './master-tab/master-tab.component';
+import { DigitallistComponent } from './digitallist/digitallist.component';
 
 FusionChartsModule.fcRoot(FusionCharts, Charts, FusionTheme);
 
@@ -119,13 +121,14 @@ const routes: Routes = [
   {path: 'offer-list', component: OfferListComponent  , canActivate: [AuthGuard] },
   {path: 'add-offer', component:AddOfferComponent , canActivate: [AuthGuard] },
   {path: 'add-gift', component:AddgiftComponent , canActivate: [AuthGuard] },
+  {path: 'add-gift/:id', component:AddgiftComponent , canActivate: [AuthGuard] },
+
   {path: 'gifts', component:GiftsComponent , canActivate: [AuthGuard] },
   {path: 'edit-offer/:offer_id', component:EditOfferComponent , canActivate: [AuthGuard] },
   {path: 'offer-detail/:offer_id', component:OfferDetailComponent , canActivate: [AuthGuard] },
   {path: 'gift-list', component:GiftListComponent , canActivate: [AuthGuard] },
   {path: 'gift-detail/:gift_id', component:GiftDetailComponent , canActivate: [AuthGuard] },
   {path: 'productcategory-list', component:ProductcategoryListComponent , canActivate: [AuthGuard] },
-  {path: 'productsubcatgory/:id/:category_name', component:SubcategoryListComponent , canActivate: [AuthGuard] },
   {path: 'referral-master', component:ReferralMasterComponent , canActivate: [AuthGuard] },
   {path: 'products-list', component:ProductsListComponent , canActivate: [AuthGuard] },
   {path: 'demo-karigar-list', component:DemoKarigarComponent , canActivate: [AuthGuard] },
@@ -139,7 +142,6 @@ const routes: Routes = [
   {path: 'karigar-list/:page', component:KarigarListComponent , canActivate: [AuthGuard] },
   {path:'dealer-list/:page',component:DealerListComponent,canActivate:[AuthGuard]},
   {path:'dealer-detail/:dealer_id/:page',component:DealerDetailComponent,canActivate:[AuthGuard]},
-  {path: 'add-gift/:id', component:AddgiftComponent , canActivate: [AuthGuard] },
   {path:'dealer-add/:dealer_id',component:DealerAddComponent,canActivate:[AuthGuard]},
   {path:'dealer-add',component:DealerAddComponent,canActivate:[AuthGuard]},
   {path:'distributor-add',component:DistributorAddComponent,canActivate:[AuthGuard]},
@@ -148,7 +150,7 @@ const routes: Routes = [
   {path:'distributor-add/:distributor_id',component:DistributorAddComponent,canActivate:[AuthGuard]},
   {path: 'karigar-add', component:KarigarAddComponent , canActivate: [AuthGuard] },
   {path: 'karigar-add/:karigar_id', component:KarigarAddComponent , canActivate: [AuthGuard] },
-  // {path: 'karigar-detail/:karigar_id',  component:KarigarDetailComponent , canActivate: [AuthGuard] },
+  {path: 'karigar-detail/:karigar_id',  component:KarigarDetailComponent , canActivate: [AuthGuard] },
   {path: 'karigar-detail/:karigar_id/:page',  component:KarigarDetailComponent , canActivate: [AuthGuard] },
   {path: 'coupon-code-list',  component:CouponCodeListComponent , canActivate: [AuthGuard] },
   {path: 'feedback-list',  component:FeedbackComponent , canActivate: [AuthGuard] },
@@ -165,9 +167,14 @@ const routes: Routes = [
   {path: 'distributor-list', component:DistributorComponent , canActivate: [AuthGuard] },
   {path: 'notification-history', component:NotificationHistoryComponent , canActivate: [AuthGuard] },
   {path: 'message-history', component:MessageHistoryComponent , canActivate: [AuthGuard] },
+  {path: 'add-coupon', component:AddCouponCodesComponent , canActivate: [AuthGuard] },
+  {path: 'contractor-list', component:ContractorListComponent , canActivate: [AuthGuard] },
   {path: 'coupon-code-master', component:CouponCodeMasterComponent , canActivate: [AuthGuard]},
   {path: 'digitallist', component:DigitallistComponent , canActivate: [AuthGuard]},
-  {path: 'add-coupon', component:AddCouponCodesComponent , canActivate: [AuthGuard] },
+
+
+
+
   { path: '**', redirectTo: ''},
 ];
 
@@ -222,14 +229,12 @@ const routes: Routes = [
     ShippedDetailModelComponent,
     SliderComponent,
     ReopenRemarkModleComponent,
-    CouponCodeMasterComponent,
     ProductcategoryDescModuleComponent,
     CouponSummaryModleComponent,
     FeedbackReplyModleComponent,
     DailyCouponAccessComponent,
     CompanyProfileComponent,
     TermConditionImageComponent,
-    DigitallistComponent,
     ReedemCouponSummaryComponent,
     CouponCodeModalComponent,
     ReferralMasterComponent,
@@ -259,9 +264,16 @@ const routes: Routes = [
     AddgiftComponent,
     GiftsComponent,
     AddCouponCodesComponent,
+    ContractorListComponent,
+    ContractorSatusModalComponent,
+    ChangeTypeModalComponent,
+    MasterTabComponent,
+    CouponCodeMasterComponent,
     MasterTabComponent,
     UploaddigitalcatComponent,
-    SubcategoryListComponent
+    DigitallistComponent
+
+
   ],
   imports: [
     HttpClientModule,
@@ -285,7 +297,6 @@ const routes: Routes = [
     MatExpansionModule,
     FilterPipeModule,
     NgxMatSelectSearchModule,
-
   ],
   providers: [
     AuthGuard,
@@ -295,8 +306,8 @@ const routes: Routes = [
   
   entryComponents: [
     GiftRedeemModuleComponent,
-    TransferCodeComponent,
     UploaddigitalcatComponent,
+    TransferCodeComponent,
     ChangeStatusComponent,
     CouponDetailsComponent,
     ProductImageModuleComponent,
@@ -322,7 +333,9 @@ const routes: Routes = [
     SendmessageComponent,
     BonusPointModelComponent,
     SendNotificationComponent,
-    AssignRelatedProductsComponent
+    AssignRelatedProductsComponent,
+    ContractorSatusModalComponent,
+    ChangeTypeModalComponent
   ],
   
   exports: [

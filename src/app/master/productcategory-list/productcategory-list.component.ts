@@ -235,7 +235,6 @@ export class ProductcategoryListComponent implements OnInit {
     openDialog(id ,string ) {
         
         const dialogRef = this.alrt.open(ProductImageModuleComponent,{
-            panelClass: 'zoom-box',
             data: {
                 'id' : id,
                 'mode' : string,

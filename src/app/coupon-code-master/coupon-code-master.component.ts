@@ -115,7 +115,7 @@ export class CouponCodeMasterComponent implements OnInit {
         this.db.post_rqst( this.productForm, 'master/updateProductPoints')
         .subscribe( d => {
             if(d.status == 'PRODUCTEXIST' || d.status == 'GROUPEXIST'){
-                this.dialog.error('Product Point Group Name already exists.');
+                this.dialog.error('Brand Name already exists.');
                 this.savingData = false;
                 this.getProductList('');
                 return;

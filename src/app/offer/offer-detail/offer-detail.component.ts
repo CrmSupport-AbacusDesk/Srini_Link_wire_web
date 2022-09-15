@@ -427,7 +427,6 @@ export class OfferDetailComponent implements OnInit {
                 // height:'500px',
                 
                 data: {
-                    'user_type': this.getData.user_type,
                     'gift_id' : id,
                     'offer_id'  :   this.offer_id,
                 }
@@ -510,31 +509,17 @@ export class OfferDetailComponent implements OnInit {
                 });
             }
         }
-        openDialog4(id ,string) {
-            const dialogRef = this.alrt.open(ProductImageModuleComponent,{
+        openDialog(img) {
+            const dialogRef = this.alrt.open(ProductImageModuleComponent,
+              {
                 data: {
-                    'id' : id,
-                    'mode' : string,
-                    // 'image_type' : img_type,
+                  'img' : img,
                 }
-            });
-            dialogRef.afterClosed().subscribe(result => {
+              });
+              dialogRef.afterClosed().subscribe(result => {
                 console.log(`Dialog result: ${result}`);
-            });
-        }
-        openDialog2(gift_id ,string ) {
-            
-            
-            const dialogRef = this.alrt.open(ProductImageModuleComponent,{
-                data: {
-                    'id' : gift_id,
-                    'mode' : string,
-                }
-            });
-            dialogRef.afterClosed().subscribe(result => {
-                console.log(`Dialog result: ${result}`);
-            });
-        }
+              });
+            }
         edit(){
             this.router.navigate(['/edit-offer/' +this.offer_id]);
         }
@@ -650,13 +635,17 @@ export class OfferDetailComponent implements OnInit {
             
         }
         
-        editgift(id,total_redeem) {
+        editgift(id,total_redeem, type) {
+            console.log(type);
+            
             const dialogRef = this.alrt.open(EditGiftComponent,{
                 width: '800px',
                 data: {
                     'id' : id,
                     'offer_id':this.offer_id,
                     'total_redeem':total_redeem,
+                    'type':type,
+                    'previousData':this.gift
                 }
             });
             dialogRef.afterClosed().subscribe( r => {

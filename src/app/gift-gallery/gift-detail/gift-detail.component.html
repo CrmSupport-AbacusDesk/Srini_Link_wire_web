@@ -20,7 +20,8 @@
                 <div class="territory-infos ">
                   <div class="cs-checkboxs  ">
                     <div class="checkbox-outers">
-                      <img [src]="uploadUrl+getData.offer_banner" (click)="openDialog4(getData.id,'test7')">
+                      <img [src]="uploadUrl + getData.offer_banner" (click)="openDialog(uploadUrl + getData.offer_banner)">
+                      <!-- <img [src]="getData.offer_banner" (click)="openDialog4(getData.id,'test7')"> -->
                     </div>
                   </div>  
                 </div>
@@ -59,9 +60,9 @@
                     </div>
                     
                     <div class="col s4 padding0">
-                      <div class="detail-field status">
+                      <div class="detail-field">
                         <p>Status</p>
-                        <span>{{getData.offer_status}}</span>
+                        <span class="{{getData.offer_status}}">{{getData.offer_status}}</span>
                       </div>
                     </div>
                     
@@ -97,7 +98,8 @@
           <div class="full-offer">
             <div class="top-heading">
               <h2>GIFT DETAIL</h2>
-              <mat-slide-toggle color="primary" [name]="gift_status" [(ngModel)]="getData.giftStatus" (change)="updateGiftStatus($event)"></mat-slide-toggle>
+              <mat-slide-toggle [name]="gift_status" [(ngModel)]="getData.giftStatus" (change)="updateGiftStatus($event)"></mat-slide-toggle>
+              
             </div>
           </div>
           <div class="row mb0">
@@ -106,7 +108,8 @@
                 <div class="territory-infos ">
                   <div class="cs-checkboxs  ">
                     <div class="checkbox-outers">
-                      <img src="{{uploadUrl+getData.gift_image}}"  (click)="openDialog2( getData.gift_id,'test4')">
+                      <img [src]="uploadUrl + getData.image" (click)="openDialog(uploadUrl + getData.image)">
+                      <!-- <img [src]="getData.image"  (click)="openDialog2( getData.gift_id,'test4')"> -->
                     </div>
                   </div>  
                 </div>
@@ -165,7 +168,7 @@
                     <div class="col s4 padding0">
                       <div class="detail-field status dark-red">
                         <div class="points">
-                          <span>{{getData.coupon_points}}</span>
+                          <span>&#8377; {{getData.coupon_points}}</span>
                           <p>Points</p>
                           
                         </div>

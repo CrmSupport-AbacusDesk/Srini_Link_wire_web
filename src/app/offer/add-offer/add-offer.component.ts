@@ -5,6 +5,7 @@ import {DialogComponent} from '../../dialog/dialog.component';
 import {SessionStorage} from '../../_services/SessionService';
 import { ImportStatusModelComponent } from '../../offer/import-status-model/import-status-model.component';
 import {MatDialog} from '@angular/material';
+import { ProductImageModuleComponent } from 'src/app/master/product-image-module/product-image-module.component';
 
 @Component({
   selector: 'app-add-offer',
@@ -25,17 +26,23 @@ export class AddOfferComponent implements OnInit {
   mindate:any = new Date();
   giftList:any = [];
   gift :any = {};
-  uploadUrl:any=''
+  uploadUrl:any ='';
+  btn_value = false;
+  filter: string;
+
   constructor(public db: DatabaseService, private route: ActivatedRoute, private router: Router, public ses: SessionStorage,
     public dialog: DialogComponent ,  public alrt:MatDialog) {
-
+      this.uploadUrl = db.uploadUrl;
     }
 
   ngOnInit() {
-    this.uploadUrl = this.db.uploadUrl;
     this.offer_id = 0;
     this.getStateList();
     this.getGiftList();
+}
+
+checkValue(){
+  this.btn_value = true
 }
 
   getStateList(){
@@ -130,6 +137,18 @@ export class AddOfferComponent implements OnInit {
     }
   }
 
+  openDialog(img) {
+    const dialogRef = this.alrt.open(ProductImageModuleComponent,
+        {
+            data: {
+                'img' : img,
+            }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+            console.log(`Dialog result: ${result}`);
+        });
+    }
+
   
   saveOffer(form:any) {
     if( !this.addOffer.offer_banner ){
@@ -193,18 +212,6 @@ export class AddOfferComponent implements OnInit {
 
   addgiftList()
   {
-    // if( !this.gift.gift_title ){
-    //   this.dialog.warning('Please Enter Title!');
-    //   return;
-    // }
-    // if( !this.gift.gift_specification ){
-    //   this.dialog.warning('Please Enter Gift Specification!');
-    //   return;
-    // }
-    // if( !this.gift.image ){
-    //   this.dialog.warning('Please Choose at least one Image ');
-    //   return;
-    // }
     for (let i = 0; i < this.giftList.length; i++) {
       if( this.gift.gift_title ===  this.giftList[i].gift_title ){
             this.dialog.success('Part Number Already Exist, Please Delete it first.');
@@ -216,6 +223,7 @@ export class AddOfferComponent implements OnInit {
     this.giftList.push( this.gift );
     console.log(this.giftList);
     this.gift={};
+    this.btn_value = false
   }
 
 
@@ -230,7 +238,8 @@ export class AddOfferComponent implements OnInit {
 giftlisting:any=[];
       getGiftList() 
       {
-          this.db.post_rqst(  { }, 'offer/dropDownGift')
+      this.filter='';
+          this.db.post_rqst(  { 'filter':this.filter}, 'offer/dropDownGift')
           .subscribe((d)=> {
               this.loading_list = false;
               console.log(d);

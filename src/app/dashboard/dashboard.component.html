@@ -10,7 +10,7 @@
                     <div class="bottom-item">
                         <div class="cs-item">
                             <span>{{offer_karigar}}</span>
-                            <p>Electrician</p>
+                            <p>Plumber</p>
                         </div>
                         <div class="cs-item">
                             <span>{{offer_Retailer}}</span>
@@ -37,7 +37,7 @@
                     <div class="bottom-item">
                         <div class="cs-item">
                             <span>{{pending_redeem_request_karigar}}</span>
-                            <p>Electrician</p>
+                            <p>Plumber</p>
                         </div>
                         <div class="cs-item">
                             <span>{{pending_redeem_request_retailer}}</span>
@@ -59,11 +59,28 @@
                     <div class="bottom-item">
                         <div class="cs-item">
                             <span>{{coupon_value_scan_by_karigar}}</span>
-                            <p>Electrician</p>
+                            <p>Plumber</p>
                         </div>
                         <div class="cs-item">
                             <span>{{coupon_value_scan_by_Retailer}}</span>
                             <p>Retailer</p>
+                        </div>
+                    </div>
+                </li>
+                
+                <li matRipple style="background: #dbb408;" (click)="goto_balance_coupon_page()">
+                    <div class="top-item">
+                        <h2>Coupon Value</h2>
+                        <span class="flat">{{total_coupon_amount}}</span>
+                    </div>
+                    <div class="bottom-item">
+                        <div class="cs-item">
+                            <span>{{coupon_amount_scan_by_karigar}}</span>
+                            <p>Plumber Scan</p>
+                        </div>
+                        <div class="cs-item">
+                            <span>{{pending_couopn_amount}}</span>
+                            <p>Balance</p>
                         </div>
                     </div>
                 </li>
@@ -78,11 +95,11 @@
                         <span class="cs-count">{{totalNetwork}}</span>
                     </div>
                     <div class="bottom-item">
-                        <div class="cs-item" (click)="goto_karigarsPage('karigar')">
+                        <div class="cs-item" (click)="goto_karigarsPage('Plumber')">
                             <span>{{user_karigar}}</span>
-                            <p>Electrician</p>
+                            <p>Plumber</p>
                         </div>
-                        <div class="cs-item" (click)="goto_karigarsPage('dealer')">
+                        <div class="cs-item" (click)="goto_karigarsPage('Retailer')">
                             <span>{{user_Retailer}}</span>
                             <p>Retailer</p>
                         </div>
@@ -106,13 +123,13 @@
                     </div>
                     <div class="counter-name">Product</div>
                 </li> -->
-                <li matRipple style="background: #665c5a;" (click)="goto_feedbackPage()">
+                <!-- <li matRipple style="background: #665c5a;" (click)="goto_feedbackPage()">
                     <div class="counter-value">
                         <div class="counter-icon"><img class="h30" src="assets/img/dashboard/messages.svg"></div>
                         <p>{{unread_counts}}</p>
                     </div>
                     <div class="counter-name">Total Unread Message</div>
-                </li>
+                </li> -->
             </ul>
         </div>
         
@@ -120,7 +137,7 @@
             <div class="col s6">
                 <div class="pie-chart">
                     <div class="chart-header">
-                        <p>State Wise Electrician</p>
+                        <p>State Wise Plumber</p>
                     </div>
                     <div class="graph">
                         <fusioncharts
@@ -218,9 +235,9 @@
         <div class="pie-chart">
             <div class="chart-header">
                 <p>Super 30 </p>
-
+                
                 <div class="sm-tab">
-                    <a class="" [ngClass]="{'active': showKarigarList == true}"  (click)="showKarigar()" mat-button>Electrician</a>
+                    <a class="" [ngClass]="{'active': showKarigarList == true}"  (click)="showKarigar()" mat-button>Plumber</a>
                     <a class="" [ngClass]="{'active': showDealersList == true}" (click)="showDealers()" mat-button>Retailer</a>
                     <!-- <a class="" mat-button>Distributor</a> -->
                 </div>
@@ -249,18 +266,18 @@
                                     <tr *ngFor="let data of super_karigars">
                                         <td>{{data.first_name | titlecase}}</td>
                                         <td class="w200">{{data.state}}</td>
-                                        <td class="w90 point">{{data.balance_point+data.referal_point_balance}}</td>
+                                        <td class="w90 point">{{data.balance_point}}</td>
                                         <td class="w90 eligible">{{data.gift_eligible}}</td>
                                     </tr>
                                 </table>
-                                    <table *ngIf="showDealersList">
+                                <table *ngIf="showDealersList">
                                     <tr *ngFor="let data of super_dealers">
                                         <td>{{data.first_name | titlecase}}</td>
                                         <td class="w200">{{data.state}}</td>
-                                        <td class="w90 point">{{data.balance_point+data.referal_point_balance}}</td>
+                                        <td class="w90 point">{{data.balance_point}}</td>
                                         <td class="w90 eligible">{{data.gift_eligible}}</td>
                                     </tr>
-                                
+                                    
                                 </table>
                             </div>
                         </td>
@@ -276,7 +293,7 @@
             <div class="chart-header">
                 <p>Last 7 Day's Wise Scan Codes</p>
                 <div class="sm-tab">
-                    <a class="" [ngClass]="{'active': show_karigar_graph == true}" (click)="showKarigarGraph()" mat-button>Electrician</a>
+                    <a class="" [ngClass]="{'active': show_karigar_graph == true}" (click)="showKarigarGraph()" mat-button>Plumber</a>
                     <a class="" [ngClass]="{'active': show_dealer_graph == true}" (click)="showDealerGraph()" mat-button>Retailer</a>
                     <!-- <a class="" mat-button>Distributor</a> -->
                 </div>
@@ -297,8 +314,126 @@
             [dataSource]="dealer_Source">
         </fusioncharts>
     </div>
-    </div>
 </div>
+</div>
+</div>
+
+<div class="row mb15">
+    <div class="col s4  ">
+        <div class="pie-chart">
+            <div class="chart-header">
+                <p>{{karigar_anni_graph == true ? 'Plumber' :'Retailer'}} Anniversary Upcoming 7 Day's</p>
+
+
+                <div class="sm-tab">
+                    <a class="" [ngClass]="{'active': karigar_anni_graph == true}"  (click)="KarigarAnniGraph()" mat-button>Plumber</a>
+                    <a class="" [ngClass]="{'active': dealer_anni_graph == true}" (click)="DealerAnniGraph()" mat-button>Retailer</a>
+                </div>
+            </div>
+            <div class="cs-table scroll-335">
+                <table *ngIf="aniversary.length">
+                    <tr>
+                        <th class="first-head">
+                            <div class="table-head">
+                                <table>
+                                    <tr>
+                                        <th class="w50">S.No.</th>
+                                        <th>Name</th>
+                                        <th class="w110 text-center">Mobile Number</th>
+                                        <th class="w90 text-center">D.O.A</th>
+                                    </tr>
+                                </table>
+                            </div>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="table-body">
+                                <table *ngIf="karigar_anni_graph" >
+                                    <tr *ngFor="let data of aniversary; let i= index;">
+                                        <td class="w50">{{i+1}}</td>
+                                        <td>{{data.full_name}}</td>
+                                        <td class="w110">{{data.mobile_no}}</td>
+                                        <td class="w90"><strong>{{data.doa | date: 'dd MMM yyyy'}}</strong></td>
+                                    </tr>
+                                </table>
+                                <table *ngIf="dealer_anni_graph">
+                                    <tr *ngFor="let data of aniversary; let i= index;">
+                                        <td class="w50">{{i+1}}</td>
+                                        <td>{{data.full_name}}</td>
+                                        <td class="w110">{{data.mobile_no}}</td>
+                                        <td class="w90"><strong>{{data.doa | date: 'dd MMM yyyy'}}</strong></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <div class="no-data" *ngIf="aniversary.length == [];">
+                    <h2>Data Not Available</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col s4">
+        <div class="pie-chart">
+            <div class="chart-header">
+                <p> {{karigar_birth_graph == true ?  'Plumber' :'Retailer'}} Birthday Upcoming 7 Day's</p>
+                <div class="sm-tab">
+                    <a class="" [ngClass]="{'active': karigar_birth_graph == true}"  (click)="KarigarBirthGraph()" mat-button>Plumber</a>
+                    <a class="" [ngClass]="{'active': dealer_birth_graph == true}" (click)="DealerBirthGraph()" mat-button>Retailer</a>
+                </div>
+            </div>
+            <div class="cs-table scroll-335">
+                <table *ngIf="birthday.length">
+                    <tr>
+                        <th class="first-head">
+                            <div class="table-head">
+                                <table>
+                                    <tr>
+                                        <th class="w50">S.No.</th>
+                                        <th>Name</th>
+                                        <th class="w110  text-center">Mobile Number</th>
+                                        <th class="w90 text-center">D.O.B</th>
+                                    </tr>
+                                </table>
+                            </div>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="table-body">
+                                <table *ngIf="karigar_birth_graph">
+                                    <tr *ngFor="let data of birthday; let i= index;">
+                                        <td class="w50">{{i+1}}</td>
+                                        <td>{{data.full_name}}</td>
+                                        <td class="w110 ">{{data.mobile_no}}</td>
+                                        <td class="w90">
+                                            <strong>{{data.dob | date: 'dd MMM yyyy'}}</strong>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <table *ngIf="dealer_birth_graph">
+                                    <tr *ngFor="let data of birthday; let i= index;">
+                                        <td class="w50">{{i+1}}</td>
+                                        <td>{{data.full_name}}</td>
+                                        <td class="w110 ">{{data.mobile_no}}</td>
+                                        <td class="w90">
+                                            <strong>{{data.dob | date: 'dd MMM yyyy'}}</strong>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <div class="no-data"  *ngIf="birthday.length == [];">
+                    <h2>Data Not Available</h2>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 </div>
 </div>

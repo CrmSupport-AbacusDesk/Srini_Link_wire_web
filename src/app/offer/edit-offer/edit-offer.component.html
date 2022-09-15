@@ -21,7 +21,7 @@
                           <mat-label>Select User Type</mat-label>
                           <mat-select  [(ngModel)]="addOffer.user_type" name="user_type" #user_type="ngModel" required>
                             <mat-option value=""></mat-option>
-                            <mat-option value="Karigar">Electrician</mat-option>
+                            <mat-option value="Plumber">Plumber</mat-option>
                             <mat-option value="Retailer">Retailer</mat-option>
                           </mat-select>
                           </mat-form-field>  
@@ -79,34 +79,27 @@
                     
                   </div>
                 </div>
-                
-                <div class="col s4 mt15">
+
+                <div class="col s4 mt15 ">
                   <div class="option-field">
                     <div class="territory-infos">
                       <div class="heads">
                         <h2>OFFER BANNER</h2>
                       </div>
-                      <div class="upload-img">
-                        <label>
-                          <!-- <input type="file" (change)="onUploadChange1($event)" style="display:none;" accept=".png, .jpg, .jpeg" required /> -->
-                          <input type="file" (change)="onUploadChange1($event)" style="display:none;" accept=".png, .jpg, .jpeg" required />
-                          <div class="img-section" *ngIf="addOffer.offer_banner">
-                            <img [src]="docId ? uploadUrl+addOffer.offer_banner : addOffer.offer_banner" alt="" id="img">
-                          </div>
-                          <div class="up-content" *ngIf="!addOffer.offer_banner">
-                            <p>Upload Banner</p>
-                          </div>
-                        </label>
-                        <!-- <label>
-                          <input type="file" (change)="HindiImage($event)" style="display:none;" accept=".png, .jpg, .jpeg" required />
-                          <div class="img-section" *ngIf="tmphin || addOffer.hin_banner">
-                            <img [src]="tmphin ? tmphin : uploadUrl+addOffer.hin_banner" alt="" id="img">
-                          </div>
-                          <div class="up-content" *ngIf="!tmphin && !addOffer.hin_banner">
-                            <p>Upload Hindi Banner</p>
-                          </div>
-                        </label> -->
-                      </div>
+                      <div class="cs-checkboxs" style="height: 325px;">
+                        <div class="checkbox-outers image-inputes">
+                          <label>
+                            <input type="file" (change)="onUploadChange1($event)" style="display:none;" accept=".png, .jpg, .jpeg" required />
+                            
+                            <img src="{{addOffer.imgId ?uploadUrl + addOffer.offer_banner : addOffer.offer_banner}}">
+                            <!-- <img  [src]="uploadUrl + addOffer.offer_banner?addOffer.offer_banner:'../assets/default-image.png' " alt="" id="img" style="cursor: pointer;"> -->
+                            <div *ngIf="!addOffer.offer_banner">
+                              <h4>Upload Image</h4>
+                              <i class="material-icons add-file-icon" >add</i>
+                            </div>
+                          </label>
+                        </div>
+                      </div>  
                     </div>
                   </div>
                 </div>

@@ -18,18 +18,17 @@
                             </div>
                         </div>
                         <div class="row mb0">
-                            <div class="off">
+                            <div class="off pb0">
                                 <div class="col s12 padding0">
                                     <div class="option-field">
                                         <div class="row mb15">
                                             <div class="col s6 ">
                                                 <div class="detail-field">
                                                     <p>User Type</p>
-                                                    <span *ngIf="getData.user_type=='Karigar'">Electrician</span>
-                                                    <span *ngIf="getData.user_type=='Retailer'">Dealer</span>
+                                                    <span>{{getData.user_type == 'Retailer' ? 'Retailer':'Plumber'  }}</span>
                                                 </div>
                                             </div>
-
+                                            
                                             <div class="col s6 ">
                                                 <div class="detail-field">
                                                     <p>Title</p>
@@ -40,7 +39,7 @@
                                         </div>
                                         
                                         <div class="row mb15">
-                                            <div class="col s6">
+                                            <div class="col s6 ">
                                                 <div class="detail-field">
                                                     <p>Offer Code</p>
                                                     <span># {{getData.offer_code}}</span>
@@ -52,10 +51,12 @@
                                                     <span>{{getData.start_date | date:'dd MMM yyyy'}}</span>
                                                 </div>
                                             </div>
+                                            
+                                            
                                         </div>
                                         
                                         <div class="row mb15">
-                                            <div class="col s6">
+                                            <div class="col s6 ">
                                                 <div class="detail-field">
                                                     <p>Offer End Date</p>
                                                     <span>{{getData.end_date | date:'dd MMM yyyy'}}</span>
@@ -79,15 +80,15 @@
                                             </div> -->
                                         </div>
                                         
-                                        <div class="row">
-                                            <div class="col s12" *ngIf="getData.reason != ''">
+                                        <div class="row"  *ngIf="getData.reason != ''">
+                                            <div class="col s12 ">
                                                 <div class="detail-field my-scroll">
                                                     <div class="space">
                                                         <p>Deactive Reason :</p>
                                                         <!-- <span>{{getData.deactive_date | date:'d MMMM y'}} {{ getData.deactive_name ? '/ '+getData.deactive_name : ''}}</span>  -->
                                                         <span>{{getData.deactive_date=="0000-00-00"?"":getData.deactive_date | date:'d MMMM y'}} {{ getData.deactive_name ? '/ '+getData.deactive_name : ''}}
                                                         </span>
-                                                        </div>
+                                                    </div>
                                                     
                                                     <div class="dactive-detail">
                                                         <p>{{getData.reason}}
@@ -95,15 +96,13 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            
                                         </div>
-                        
                                     </div>
                                 </div>
                             </div>
                         </div>
                         
-                        <div class="row pl7 pr7">
+                        <div class="row pl5 pr5">
                             <div class="col s6">
                                 <div class="option-field">
                                     <div class="territory-infos my-scroll">
@@ -143,9 +142,8 @@
                             <!-- <h2>OFFER BANNER(ENGLISH & HINDI)</h2> -->
                             <h2>OFFER BANNER</h2>
                         </div>
-
                         <div class="uploaded-banner" style="cursor: zoom-in;">
-                            <img src="{{uploadUrl + getData.offer_banner}}" (click)="openDialog4(getData.id,'test7')">
+                            <img [src]="uploadUrl + getData.offer_banner" (click)="openDialog(uploadUrl + getData.gift_image)">
                         </div>
                     </div>
                     
@@ -185,7 +183,7 @@
                             <div class="top-heading">
                                 <h2>GIFT DETAIL</h2>
                                 <div class="add-co">
-                                    <i class="material-icons" (click)="editgift(0,0)" >add</i>
+                                    <i class="material-icons" (click)="editgift(0,0, 1)"  >add</i>
                                 </div>
                             </div>
                             
@@ -224,13 +222,9 @@
                                                     </div>
                                                 </td>
                                                 <td class="w80">
-                                                    <div class="image-thum" *ngIf="v.gift_image!=''">
-                                                        <img src="{{uploadUrl+v.gift_image}}" (click)="openDialog2(v.gift_id,'test4')">
+                                                    <div class="image-thum">
+                                                        <img [src]="uploadUrl + v.image" (click)="openDialog(uploadUrl + v.image)">
                                                     </div>
-
-                                                    <!-- <div class="image-thum" *ngIf="v.gift_image==''">
-                                                        <img [src]="uploadUrl+v.image" (click)="openDialog2(uploadUrl+v.gift_id,'test4')">
-                                                    </div> -->
                                                 </td>
                                                 <td class="w50">
                                                     <mat-slide-toggle name="gift_status" [(ngModel)]="v.giftStatus" (change)="updateGiftStatus($event,v.gift_id)" ></mat-slide-toggle>
@@ -238,7 +232,8 @@
                                                 
                                                 <td class="w70 text-center padding0">
                                                     <div class="td-flex">
-                                                        <button class="right" (click)="editgift(v.gift_id,v.total_redeem)"><i class="material-icons">edit</i></button>
+                                                        <button class="right" (click)="editgift(v.gift_id,v.total_redeem, 2)"><i class="material-icons">edit</i></button>
+                                                        <!-- <button class="right" (click)="editgift(v.gift_id,v.total_redeem)"><i class="material-icons">edit</i></button> -->
                                                         <button class="cancel" *ngIf="v.total_redeem == '0'" (click)="deleteGift(v.gift_id)"><i class="material-icons">delete_sweep</i></button>
                                                         <button  *ngIf="v.total_redeem != '0'" ></button>
                                                     </div>

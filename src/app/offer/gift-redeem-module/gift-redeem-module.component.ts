@@ -16,27 +16,12 @@ export class GiftRedeemModuleComponent implements OnInit {
   
   constructor(public db: DatabaseService, private route: ActivatedRoute, private router: Router,  public dialog: DialogComponent,
     @Inject(MAT_DIALOG_DATA) public lead_data: any, public dialogRef: MatDialogRef<GiftRedeemModuleComponent>) {
+
       this.data.offer_id = lead_data.offer_id; 
       this.data.gift_id = lead_data.gift_id; 
     }
     ngOnInit() {
       this.getProduct();
-    }
-    gotodetail(id){
-
-      if(this.lead_data.user_type=='Karigar'){
-        this.router.navigate(['/karigar-detail/' +id + '/' + 1]);
-        this.dialogRef.close(true);
-        
-
-      }
-      else{
-        this.router.navigate(['/dealer-detail/' +id + '/' + 1]);
-        this.dialogRef.close(true);
-
-      }
-     
-
     }
     product:any = {};
     getProduct() {

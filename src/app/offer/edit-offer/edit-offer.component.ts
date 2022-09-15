@@ -18,17 +18,15 @@ export class EditOfferComponent implements OnInit {
     englishImage = new FormData();
     hindiImage = new FormData();
     uploadUrl:any="";
-    docId: string;
     constructor(public db: DatabaseService, private route: ActivatedRoute, private router: Router, public ses: SessionStorage,
-        public dialog: DialogComponent) {}
+        public dialog: DialogComponent) {
+            this.uploadUrl = db.uploadUrl;
+            
+        }
         
         ngOnInit() {
-            this.uploadUrl = this.db.uploadUrl;
-
             this.route.params.subscribe(params => {
                 this.offer_id = params['offer_id'];
-                this.docId= params['offer_id'];
-
                 console.log(this.offer_id );
                 if (this.offer_id) {
                     this.getOfferDetails();
@@ -43,6 +41,8 @@ export class EditOfferComponent implements OnInit {
                 this.loading_list = false;
                 console.log(d);
                 this.addOffer = d.offer;
+                this.addOffer.imgId = d.offer;
+
             });
         }
         
@@ -56,23 +56,6 @@ export class EditOfferComponent implements OnInit {
                 this.savingData = false;
                 
                 console.log( d );
-                if(this.englishImage)
-                {
-                    this.englishImage.append("offer_id",this.offer_id);
-                    this.db.fileData(this.englishImage,"offerEnglishImage")
-                    .subscribe(resp=>{
-                        console.log(resp);
-                    })
-                }
-                
-                if(this.hindiImage)
-                {
-                    this.hindiImage.append("offer_id",this.offer_id);
-                    this.db.fileData(this.hindiImage,"offerHindiImage")
-                    .subscribe(resp=>{
-                        console.log(resp);
-                    })
-                }
                 
                 if(d['status'] == 'EXIST' ){
                     this.dialog.error( 'Offer Code Already exists');
@@ -87,14 +70,15 @@ export class EditOfferComponent implements OnInit {
         onUploadChange1(evt: any) {
             const file = evt.target.files[0];
             if (file) {
+                this.addOffer.imgId = '';
                 const reader = new FileReader();
                 reader.onload = this.handleReaderLoaded1.bind(this);
                 reader.readAsBinaryString(file);
-                this.docId = '';
             }
         }
         
         handleReaderLoaded1(e) {
+            this.addOffer.imgId = '';
             this.addOffer.offer_banner = 'data:image/png;base64,' + btoa(e.target.result) ;
             console.log(this.addOffer);
         }
@@ -114,37 +98,7 @@ export class EditOfferComponent implements OnInit {
             
         }
         
-        tmpeng:any;
-        EnglishImage(data)
-        {
-            let files = data.target.files[0];
-            if (files) 
-            {
-                let reader = new FileReader();
-                reader.onload = (e: any) => {
-                    this.tmpeng = e.target.result
-                }
-                reader.readAsDataURL(files);
-            }
-            this.englishImage.append("english_image",data.target.files[0],data.target.files[0].name);
-        }
         
-        tmphin:any;
-        HindiImage(data)
-        {
-            let files = data.target.files[0];
-            if (files) 
-            {
-                let reader = new FileReader();
-                reader.onload = (e: any) => {
-                    this.tmphin = e.target.result
-                }
-                reader.readAsDataURL(files);
-            }
-            console.log(this.tmphin);
-            
-            this.hindiImage.append("hindi_image",data.target.files[0],data.target.files[0].name);
-        }
         
     }
     

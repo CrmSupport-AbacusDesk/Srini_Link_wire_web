@@ -52,13 +52,10 @@
                     <li><p >Pages {{ current_page }} of {{ last_page }}</p></li>
                     <li><button mat-button  matTooltip="First Page" class="fisrt-btn" (click) = 'current1()'>First</button></li>
                     <li><button mat-button class="left-btn" (click) = 'redirect_previous()'><i class="material-icons">keyboard_arrow_left</i></button></li>
-                    <li><input type="text" placeholder="GO TO" [(ngModel)]="current_page"  (keyup.enter)="currentPage();"></li>
+                    <li><input type="text" placeholder="GO TO" [(ngModel)]="current_page"  (keyup.enter)="getOfferList('')"></li>
                     <li><button mat-button class="right-btn" (click) = 'redirect_next()'><i class="material-icons">keyboard_arrow_right</i></button></li>
                     <li><button mat-button  matTooltip="Last Page" class="last-btn" (click) = 'last1()'>Last</button></li>
                 </ul>
-                <div class="master-btn ml20">
-                    <button mat-button routerLink="/add-offer">ADD OFFER</button>
-                </div>
             </div>
         </div>
         <div class="css-table"  *ngIf="(filter.status == '' && offer_all ) || (filter.status == 'Active' && offer_active ) || (filter.status == 'Deactive' && offer_deactive )  ">
@@ -76,7 +73,7 @@
                             <th class="w110">End Date</th>
                             <!-- <th class="w135">Total Coupon</th> -->
                             <!-- <th class="w122">Coupon Value</th> -->
-                            <th class="w70">Gift</th>
+                            <th class="w70 text-center">Gift</th>
                             <th class="w100">Status</th>
                         </tr>
                         
@@ -88,16 +85,31 @@
                         <tr>
                             <th class="w30">&nbsp;</th>
                             <th class="w140">
-                                <!-- <div class="date-form">
+                                <div class="date-form">
                                     <i *ngIf="filter.date" class="material-icons" (click)="filter.date = '';getOfferList('') ">clear</i>
                                     <mat-form-field >
                                         <input placeholder="Date" [(ngModel)]="filter.date" (click)="openDatePicker(picker1)" name="date" matInput (dateChange)="getOfferList('')" [matDatepicker]="picker1" readonly>
                                         <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                                         <mat-datepicker #picker1></mat-datepicker>
                                     </mat-form-field>
-                                </div> -->
+                                </div>
                             </th>
-                            <th class="w100"></th>
+                            <th class="w100">
+                                <div class="form-area">
+                                    <div class="slect mr0">
+                                        <mat-form-field>
+                                            <mat-label>All</mat-label>
+                                            <mat-select  [(ngModel)]="filter.user_type" name="user_type" #user_type="ngModel" (selectionChange)="getOfferList('')">
+                                                <mat-option value="All" >All</mat-option>
+                                                <mat-option value="Plumber" >Plumber</mat-option>
+                                              <mat-option value="Retailer">Retailer</mat-option>
+                                             
+    
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </th>
                             <th>
                                 <div class="search-form">
                                     <input type="text" placeholder="Title" [(ngModel)]="filter.title"  (keyup.enter)="current_page = 1;getOfferList('')">
@@ -137,9 +149,9 @@
                             <!-- <th class="w122"></th> -->
                             <th class="w70"></th>
                             <th class="w100">
-                                <div class="form-area">
+                                <!-- <div class="form-area">
                                     <button mat-button class="go"  (click)="getOfferList('')">Go</button>
-                                </div>
+                                </div> -->
                             </th>
                         </tr>
                     </table>
@@ -156,13 +168,7 @@
                         <td class="w30">{{ ( (current_page - 1 ) * 20 ) + ( i+1 ) }}</td>
                         <td class="w140"><ng-container *ngIf="val.date_created  != '0000-00-00 00:00:00' "> {{val.date_created | date: 'dd MMM yyyy'}} / {{val.created_name}} </ng-container></td>
                         <td class="w100">
-                            <!-- <ng-container *ngIf="">{{val.user_type}}</ng-container> -->
-                            <ng-container *ngIf="val.user_type=='Karigar'">
-                                Electrician
-                            </ng-container>
-                            <ng-container *ngIf="val.user_type=='Retailer' ">
-                                Retailer
-                            </ng-container>
+                            {{val.user_type == 'Retailer' ? 'Retailer':'Plumber' }}
                         </td>
                         <td><a    routerLink="/offer-detail/{{val.id}}" class="blue">{{val.title  | titlecase }}</a></td>
                         <td class="w100">#{{val.offer_code}}</td>
@@ -184,6 +190,7 @@
                 </div>
             </div>
         </div>
+ 
         <div class="date-not" *ngIf="!loading_list && !offer.length && ( (filter.status == '' && offer_all ) || (filter.status == 'Active' && offer_active ) || (filter.status == 'Deactive' && offer_deactive ) )">
             <div class="no-img">
                 <img src="assets/result-not-found.png"> 
@@ -196,13 +203,15 @@
             </div>
             
         </div>
-        <div class="excel-btn" (click)="exportoffers()" *ngIf="offer.length">
-            <div class="image-area">
-                <a>
-                    <img src="assets/excel.svg">
-                </a>
-            </div>
-        </div>
-        
     </div>
+
+    <div class="fab-btns">
+        <button (click)="exportoffers()" *ngIf="offer.length" mat-fab class="excel">
+            <img src="assets/excel.svg">
+        </button>
+        <button mat-fab color="primary" routerLink="/add-offer" >
+            <mat-icon>add</mat-icon>
+        </button>
+    </div>
+
     

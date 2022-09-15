@@ -31,7 +31,7 @@
                             <div class="option-field">
                               <div class="control-field">
                                 <mat-form-field class="cs-input">
-                                  <input matInput placeholder="Coupon Points" name="coupon_points" [(ngModel)] = "gift.coupon_points" #coupon_points="ngModel" (keypress)="numeric_Number($event)"  >
+                                  <input matInput placeholder="Points" name="coupon_points" [(ngModel)] = "gift.coupon_points" #coupon_points="ngModel" (keypress)="numeric_Number($event)"  >
                                 </mat-form-field>  
                               </div>
                             </div>
@@ -59,7 +59,7 @@
                                     <div class="cs-file  file-up">
                                       <label>
                                         <input type="file" (change)="onUploadChange2($event)" style="display:none;" accept=".png, .jpg, .jpeg " />
-                                        <img  [src]="img_id ? urlPath+gift.gift_image : gift.gift_image " alt="" id="img">
+                                        <img  [src]="img_id ? urlPath + gift.image : gift.image" alt="" id="img">
                                         <i class="material-icons add-file-icon"  >add</i>
                                       </label>
                                     </div>

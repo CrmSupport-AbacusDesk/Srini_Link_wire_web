@@ -3,6 +3,7 @@ import { MatDatepicker, MatDialog } from '@angular/material';
 import { DialogComponent } from 'src/app/dialog/dialog.component';
 import { MastetDateFilterModelComponent } from 'src/app/mastet-date-filter-model/mastet-date-filter-model.component';
 import { DatabaseService } from 'src/app/_services/DatabaseService';
+import { CouponCodeModalComponent } from '../coupon-code-modal/coupon-code-modal.component';
 
 @Component({
   selector: 'app-add-coupon-codes',
@@ -16,23 +17,32 @@ export class AddCouponCodesComponent implements OnInit {
   filter:any = {};
   date1;
   product_code:any =[];
-  ngSwitchCase: any
+  
+
 
   constructor(public db: DatabaseService,  public dialog: DialogComponent, public alrt: MatDialog) { 
     
   }
 
   ngOnInit() {
-    this.getProduct('');
+    this.getProduct();
     this.getAvailableCoupanList('');
   }
 
-  getProduct(e){
-    console.log("you search : "+e);
-    this.db.post_rqst( {'search':e}, 'app_karigar/getProduct?page=').subscribe(r=>{
+  getProduct(){
+    this.db.post_rqst( '', 'app_karigar/getProduct?page=').subscribe(r=>{
       console.log(r);
       this.product_code=r['productData'];
-      console.log(this.product_code);
+      this.getSize('');
+    })
+  }
+
+  product_size:any =[];
+  getSize(id){
+    console.log(id);
+    this.db.post_rqst( {'product_id':id}, 'app_karigar/coupon_product_size?page=').subscribe(r=>{
+      console.log(r);
+      this.product_size=r['product_sizes'];
     })
   }
 
@@ -41,7 +51,7 @@ export class AddCouponCodesComponent implements OnInit {
     console.log("coupon list is come");
     this.db.post_rqst({'filter': this.filter},'app_master/coupon_history').subscribe(r=>{
       // console.log(r);
-      this.available_coupon=r['coupon'];
+      this.available_coupon=r['coupon']['data'];
       console.log(this.available_coupon);
     })
   }
@@ -60,7 +70,7 @@ saveCouponfrom(form: any) {
     console.log("test");
     console.log('====================================');
 
-    if (this.coupon.total_coupon <= 50000) {
+    if (this.coupon.total_coupon <= 25000) {
       this.loading_list = true;
       this.savingData = true;
       this.coupon.created_by = this.db.datauser.id;
@@ -81,7 +91,7 @@ saveCouponfrom(form: any) {
         });
     }
     else {
-      this.dialog.error('Can not Generate more than 50,000 coupon codes at once!');
+      this.dialog.error('Can not Generate more than 25000 coupon codes at once!');
     }
 
   }
@@ -107,22 +117,13 @@ openDatepicker(): void {
       this.getAvailableCoupanList('');
   });
 }
-scanCoupon(id){
+downloadCoupon(id){
   this.db.post_rqst({'id':id}, 'app_master/exportCoupon')
   .subscribe( d => {
       document.location.href = this.db.myurl+'/app/uploads/exports/coupons.csv';
       console.log("downloaded Excel sucessfully");
   });
 }
-
-companyCoupon(id){
-  this.db.post_rqst({'id':id}, 'app_master/exportCoupon')
-  .subscribe( d => {
-      document.location.href = this.db.myurl+'/app/uploads/exports/coupons.csv';
-      console.log("downloaded Excel sucessfully");
-  });
-}
-
 
 deleteCoupon(id) {
   this.dialog.delete('Coupon').then((result) => {
@@ -136,22 +137,21 @@ deleteCoupon(id) {
   });
 } 
 
-  selectedProduct: any;
-  onProductSelection = (event) => {
-    console.log(event.value);
-    this.selectedProduct = this.product_code.find(p => p.product_code === event.value); 
-    console.log(this.selectedProduct);
-  }
 
-  generateCoupon = (form: any) => {
-    console.log('Generate Coupon Called');
-    console.log(this.selectedProduct);
-    // if(this.selectedProduct.retailer_point == "" && this.selectedProduct.karigar_point == "") {
-    //   console.log('inside if condition');
 
-    //   this.dialog.error('Coupon cann\'t generated. Update electrician and retailer points in product master!');
-    //   return;
-    // }
-    this.saveCouponfrom(form);
-  }
+openModel(val) {
+  console.log('====================================');
+  console.log(val);
+  console.log('====================================');
+  const dialogRef = this.alrt.open(CouponCodeModalComponent,{
+      width: '500px',
+      data: {
+          'data' : val,
+      }
+  });
+  dialogRef.afterClosed().subscribe( r => {
+      if( r ) this.getAvailableCoupanList('');
+  });
+}
+
 }

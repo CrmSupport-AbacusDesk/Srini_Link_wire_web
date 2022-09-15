@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { MastetDateFilterModelComponent } from 'src/app/mastet-date-filter-model/mastet-date-filter-model.component';
 import { SendmessageComponent } from 'src/app/master/karigar-data/sendmessage/sendmessage.component';
 import { SendNotificationComponent } from 'src/app/master/karigar-data/send-notification/send-notification.component';
+import { ChangeTypeModalComponent } from 'src/app/change-type-modal/change-type-modal.component';
 
 
 @Component({
@@ -78,25 +79,31 @@ export class KarigarListComponent implements OnInit {
         this.current_page = this.last_page;
         this.getKarigarList('');
     }
-
-
-    currentPage = () => {
-        if(this.current_page < 1){
-            this.current_page = 1;
-        }else if (this.current_page > this.last_page) { 
-            this.current_page = this.last_page;
-        }
-        this.getKarigarList('');
-    }
     
+
+    wallet_asc = false;
+
+    sortByWallet(){
+        this.wallet_asc = !this.wallet_asc;
+        if(this.wallet_asc){
+            this.filter.sortBy = {
+                "sorting_order": "asc"
+            }
+            this.getKarigarList('');
+        }
+        else if (!this.wallet_asc){
+            this.filter.sortBy = {
+                "sorting_order": "desc"
+            }
+            this.getKarigarList('');
+        }
+    }
+
     total_wallet_point:any = 0;
     
     getKarigarList(action:any) 
     {
-        console.log('-=-=-=-=-=-=-=-=- Karigar List Filter -------------------------------- ')
         console.log(this.filter);
-        console.log('----------------------------------------------------------------')
-
         this.loading_list = true;
         this.filter.date = this.filter.date  ? this.db.pickerFormat(this.filter.date) : '';
         if( this.filter.date)this.filtering = true;
@@ -142,7 +149,7 @@ export class KarigarListComponent implements OnInit {
         this.filter.mode = 1;
         this.db.post_rqst(  {'filter': this.filter , 'login':this.db.datauser,user_type:'1'}, 'karigar/exportKarigar')
         .subscribe( d => {
-            document.location.href = this.db.myurl+'/app/uploads/exports/Electrician.csv';
+            document.location.href = this.db.myurl+'/app/uploads/exports/Plumber.csv';
             console.log(d);
         });
     }
@@ -206,14 +213,10 @@ export class KarigarListComponent implements OnInit {
     
     karigarsSatus(i)
     {
-        this.dialog.statusAlert('karigar').then((result) => {
-            if(result) {
-            this.db.post_rqst({ 'status' : this.karigars[i].status, 'id' : this.karigars[i].id }, 'karigar/karigarStatus')
-            .subscribe(d => {
-                console.log(d);
-                this.getKarigarList('');
-            });
-        }
+        this.db.post_rqst({ 'status' : this.karigars[i].status, 'id' : this.karigars[i].id }, 'karigar/karigarStatus')
+        .subscribe(d => {
+            console.log(d);
+            this.getKarigarList('');
         });
     }
     
@@ -275,6 +278,21 @@ export class KarigarListComponent implements OnInit {
                 filter:this.filter,
                 select_all:this.select_all,
             }
+        });
+    }
+
+    changeType(target, id, user_type):void{
+        const dialogRef = this.alrt.open(ChangeTypeModalComponent, {
+            width: '500px',
+            data:{
+               'number':target,
+               'id':id,
+               'user_type':user_type
+            }
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            this.getKarigarList('');
         });
     }
 

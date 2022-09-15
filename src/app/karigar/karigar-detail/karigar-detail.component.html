@@ -13,7 +13,7 @@
                     <div class="full-offer">
                         <div class="top-heading no-justify">
                             <a class="back-btn" (click)="goBack()"><i class="material-icons">arrow_back</i></a>
-                            <h2>ELECTRICIAN DETAIL</h2>
+                            <h2>PLUMBER DETAIL</h2>
                             <!-- <div class="btn-align">
                                 <button class="back-btn" (click)="openBonusPoint()">BONUS POINTS</button>
                             </div> -->
@@ -35,7 +35,7 @@
                                         <li>
                                             <figure>
                                                 <div class="left-img zoom-cursor">
-                                                    <img [src]="uploadUrl+getData.profile" (click)="openDialog( uploadUrl+getData.id,'test5')" >
+                                                    <img [src]="uploadUrl + getData.profile"  (click)="openDialog(uploadUrl + getData.profile)" >
                                                 </div>
                                                 <div class="right-cont">
                                                     <p>Name</p>
@@ -88,7 +88,7 @@
                                             <p>Status {{getData.status}} Date</p>
                                             <span>{{getData.status_update_date | date : 'dd MMM yyyy' }}</span>
                                         </li>
-                                        
+
                                         <li>
                                             <figure>
                                                 <div class="left-img">
@@ -160,40 +160,12 @@
         </div>
         
         <div class="row">
-            <div class="col s6">
+
+            <!-- <div class="col s6">
                 <div class="sprate-box gift-offer">
                     <div class="full-offer">
                         <div class="top-heading">
-                            <h2>DOCUMENT DETAIL</h2>
-                        </div>
-                        <div class="detail-info pl0 pr0">
-                            <div class="img-box">
-                                <img src="{{uploadUrl + getData.document_image ? uploadUrl + getData.document_image : 'assets/default-image.png'}}" (click)="getData.document_image!='' && openDialog(getData.id,'test6')">
-                            </div>
-                            <div class="basic-details">
-                                <div class="profile-info">
-                                    <ul>
-                                        <li>
-                                            <p>Document Type</p>
-                                            <span>{{getData.document_type!='' ? getData.document_type : 'N/A'}}</span>
-                                        </li>
-                                        
-                                        <li>
-                                            <p>Document Number</p>
-                                            <span>{{getData.document_no ? getData.document_no : 'N/A'}}</span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col s6">
-                <div class="sprate-box gift-offer">
-                    <div class="full-offer">
-                        <div class="top-heading">
-                            <h2>DEALER DETAIL</h2>
+                            <h2> DEALER DETAIL</h2>
                         </div>
                         <div class="detail-info pl0 pr0">
                             
@@ -256,32 +228,84 @@
                         </div>
                     </form>
                 </div>
+            </div> -->
+
+
+
+            <div class="col s6  ">
+                <div class="sprate-box gift-offer">
+                    <div class="full-offer">
+                        <div class="top-heading">
+                            <h2>DOCUMENT DETAIL</h2>
+                        </div>
+                        <div class="detail-info pl0 pr0">
+                            <div class="img-box">
+                                <img [src]="uploadUrl + getData.document_image " (click)="openDialog(uploadUrl + getData.document_image)">
+                            </div>
+                            <div class="basic-details">
+                                <div class="profile-info">
+                                    <ul>
+                                        <li>
+                                            <p>Document Type</p>
+                                            <span>{{getData.document_type!='' ? getData.document_type : 'N/A'}}</span>
+                                        </li>
+                                        
+                                        <li>
+                                            <p>Document Number</p>
+                                            <span>{{getData.document_no ? getData.document_no : 'N/A'}}</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-           
+            
             <div class="row" >
                 <div class="used-code">
                     <div class="tab-header">
                         <div class="tab-header no-sticky gift-tab-list ">
                             <div class="tabs-list gift-tab-list ">
                                 <ul>
-                                    <li (click)="mode='1'; getScannedList()" [ngClass]="{'active': mode == '1'}" >
+                                    <li (click)="mode='4'; getReferral()" [ngClass]="{'active': mode == '4'}" >
+                                        <a>
+                                            <p>POINT RECEIVE BY RETAILERS</p>
+                                            <span>{{point_transfer.length}}</span>
+                                        </a>
+                                    </li>
+
+
+
+                                    <!-- <li (click)="mode='1'; getScannedList()" [ngClass]="{'active': mode == '1'}" >
                                         <a>
                                             <p>POINT WALLET</p>
                                             <span>{{coupon_scanned_count}}</span>
                                         </a>
-                                    </li>
+                                    </li> -->
+
                                     <li (click)="mode='2'; getReedamList()" [ngClass]="{'active': mode == '2'}" >
                                         <a>
                                             <p>REDEEM REQUEST</p>
                                             <span>{{reedam_all}}</span>
                                         </a>
                                     </li>
+
                                     <li (click)="mode='3'; getReferral()" [ngClass]="{'active': mode == '3'}" >
                                         <a>
                                             <p>OTHER POINTS</p>
                                             <span>{{referral_data.length}}</span>
                                         </a>
                                     </li>
+
+                                    <li (click)="mode='5'; getAssignPlumber()" [ngClass]="{'active': mode == '5'}" >
+                                        <a>
+                                            <p>RETAILER ASSIGN PLUMBER</p>
+                                            <span>{{retailer_count}}</span>
+                                        </a>
+                                    </li>
+
+                                    
                                 </ul>
                             </div>
                         </div>					
@@ -310,9 +334,10 @@
                                 <table>
                                     <tr>
                                         <th class="w50"></th>
-                                        <th class="w200">Date Created</th>
+                                        <th class="w110">Date Created</th>
                                         <th class="w150" >Scan Date</th>
-                                        <th class="w200" >Coupon Code</th>
+                                        <th class="w200" >Brand Name</th>
+                                        <th>Coupon Code</th>
                                         <!-- <th>Offer / Valid Upto </th> -->
                                         <th class="w135">Points</th>
                                         <th class="w150">Action</th>
@@ -323,7 +348,7 @@
                                 <table>
                                     <tr>
                                         <th class="w50"></th>
-                                        <th class="w200">
+                                        <th class="w110">
                                             <div class="date-form">
                                                 <i *ngIf="filter.date" class="material-icons" (click)="filter.date = '';getScannedList() ">clear</i>
                                                 <mat-form-field>
@@ -344,7 +369,15 @@
                                                 </mat-form-field>
                                             </div>
                                         </th>
-                                        <th class="w200"></th>
+                                        <th class="w200">
+                                            <div class="search-form">
+                                                <input type="text" placeholder="Search" [(ngModel)]="filter.product_point_group"  (keyup.enter)="current_page = 1;getScannedList()">
+                                                <i class="material-icons">search</i>
+                                            </div>
+                                        </th>
+                                        <th></th>
+
+                                        
                                         <!-- <th class="go-btn">
                                             <div class="vaild-into">
                                                 <div class="form-area wp-21 mr10">
@@ -384,13 +417,15 @@
                                 <table>
                                     <tr *ngFor="let val of scanned_coupon; let i = index">
                                         <td class="w50">{{ i + 1 }}</td>
-                                        <td class="w200" ><ng-container *ngIf="val.date_created  != '0000-00-00 00:00:00' "> {{val.date_created | date: 'dd MMM yyyy'}} </ng-container></td>
-                                        <td class="w150">{{val.scan_by_karigar_date | date : 'dd MMM yyyy h:mm a'}} </td>
-                                        <td class="w200">{{val.coupon_code}} </td>
+                                        <td class="w110" ><ng-container *ngIf="val.date_created  != '0000-00-00 00:00:00' "> {{val.date_created | date: 'dd MMM yyyy'}} </ng-container></td>
+                                        <td class="w150">{{val.scan_by_karigar_date | date : 'dd MMM yyyy'}} </td>
+                                        <td class="w200">{{val.product_point_group}} </td>
+                                        <td >{{val.coupon_code}} </td>
+
                                         <!-- <td><a  routerLink="/offer-detail"  routerLink="/offer-detail/{{val.offer_id}}" class="blue">{{val.title}} #{{val.offer_code}}</a> / {{val.end_date | date : 'dd MMM yyyy'}}</td> -->
                                         <td class="w135">{{val.karigar_coupon_value}}</td>
                                         <td class="w150 active">
-                                            <button mat-button  *ngIf="val.coupon_value == val.actual_coupon_point" (click)="reponeCoupon(val.id)">Reopen</button>
+                                            <button mat-button class="color-btn" *ngIf="val.coupon_value == val.actual_coupon_point" (click)="reponeCoupon(val.id)">Reopen</button>
                                         </td>
                                     </tr>
                                 </table>
@@ -506,9 +541,9 @@
                                         <th class="w110">
                                         </th>
                                         <th class="w100">
-                                            <div class="form-area">             
+                                            <!-- <div class="form-area">             
                                                 <button mat-button class="go" (click)="getReedamList()">Go</button>
-                                            </div>
+                                            </div> -->
                                         </th>
                                     </tr>
                                 </table>
@@ -562,12 +597,10 @@
                                 <table>
                                     <tr>
                                         <th class="w50">S No</th>
-                                        <th class="w400">Remarks</th>
-                                        <th class="w200">Points</th>
-                                        <!-- <th class="w200">Mobile No.</th>
-                                        <th class="w150">State</th>
-                                        <th class="w100">District</th>
-                                        <th>Remarks</th> -->
+                                        <th class="w200">Date Created</th>
+                                        <th class="w100">Log Type</th>
+                                        <th class="w100">Points</th>
+                                        <th>Summary</th>
                                     </tr>
                                 </table>
                             </div>
@@ -577,11 +610,10 @@
                                 <table> 
                                     <tr  *ngFor="let val of referral_data; let i = index">
                                         <td class="w50">{{ i + 1 }}</td>
-                                        <td class="w400">{{val.summary}}</td>
-                                        <td class="w200">{{val.points}}</td>
-                                        <!-- <td class="w150">{{val.state}}</td>
-                                        <td class="w100">{{val.district}}</td>
-                                        <td>{{val.remarks}}</td> -->
+                                        <td class="w200">{{ val.date_created | date: 'dd MMM yyyy' }}</td>
+                                        <td class="w100">{{val.log_type}}</td>
+                                        <td class="w100">{{val.points}}</td>
+                                        <td>{{val.summary}}</td>
                                     </tr>
                                 </table>
                             </div>
@@ -592,6 +624,167 @@
                             </div>
                         </div>
                     </div>
+
+
+
+
+                    <div class="css-table" *ngIf="mode == '4'">
+                        <div class="sticky-header">
+                            <div class="header">
+                                <table>
+                                    <tr>
+                                        <th class="w50">S No</th>
+                                        <th class="w200">Date Created</th>
+                                        <th class="w100">Log Type</th>
+                                        <th class="w100">Points</th>
+                                        <th>Summary</th>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="table-container">
+                            <div class="table-body" *ngIf="point_transfer.length > 0">
+                                <table> 
+                                    <tr  *ngFor="let val of point_transfer; let i = index">
+                                        <td class="w50">{{ i + 1 }}</td>
+                                        <td class="w200">{{ val.date_created | date: 'dd MMM yyyy' }}</td>
+                                        <td class="w100">{{val.log_type}}</td>
+                                        <td class="w100">{{val.points}}</td>
+                                        <td>{{val.summary}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="date-not" *ngIf="point_transfer.length == '0'">
+                                <div class="no-img">
+                                    <img src="assets/not-available.jpg">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="css-table " *ngIf="mode == '5'">
+                        <div class="sticky-header bo-non">
+                            <div class="header">
+                                <table>
+                                    <tr>
+                                        <th class="w50"></th>
+                                        <th class="w200">Company Name</th>
+                                        <th class="" > Name</th>
+                                        <th class="w150" >Mobile Number</th>
+                                        <th class="w150" >State</th>
+                                        <th class="w150" >District</th>
+                                       
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="header">
+                                <table>
+                                    <tr>
+                                        <th class="w50"></th>
+                                        <!-- <th class="w110">
+                                            <div class="date-form">
+                                                <i *ngIf="filter.date" class="material-icons" (click)="filter.date = ''; getAssignPlumber() ">clear</i>
+                                                <mat-form-field>
+                                                    <input matInput placeholder=" Date" [(ngModel)]="filter.date" (click)="openDatePicker(picker3)" name="date" matInput (dateChange)="getScannedList()" [matDatepicker]="picker3" readonly>
+                                                    <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                                                    <mat-datepicker #picker3></mat-datepicker>
+                                                </mat-form-field>
+                                            </div>
+                                        </th> -->
+                                        
+                                        <th class="w200">
+                                            <div class="search-form">
+                                                <input type="text" placeholder="Search" [(ngModel)]="filter.company_name"  (keyup.enter)="current_page = 1; getAssignPlumber()">
+                                                <i class="material-icons">search</i>
+                                            </div>
+                                        </th>
+                                        <th>
+                                            <div class="search-form">
+                                                <input type="text" placeholder="Search" [(ngModel)]="filter.full_name"  (keyup.enter)="current_page = 1; getAssignPlumber()">
+                                                <i class="material-icons">search</i>
+                                            </div>
+                                        </th>
+                                        <th class="w150">
+                                            <div class="search-form">
+                                                <input type="text" placeholder="Search" [(ngModel)]="filter.mobile_no"  (keyup.enter)="current_page = 1; getAssignPlumber()">
+                                                <i class="material-icons">search</i>
+                                            </div>
+                                        </th>
+                                        <th class="w150">
+                                            <div class="search-form">
+                                                <input type="text" placeholder="Search" [(ngModel)]="filter.state"  (keyup.enter)="current_page = 1; getAssignPlumber()">
+                                                <i class="material-icons">search</i>
+                                            </div>
+                                        </th>
+                                        <th class="w150">
+                                            <div class="search-form">
+                                                <input type="text" placeholder="Search" [(ngModel)]="filter.district"  (keyup.enter)="current_page = 1; getAssignPlumber()">
+                                                <i class="material-icons">search</i>
+                                            </div>
+                                        </th>
+
+                                     
+
+                                        
+                                        <!-- <th class="go-btn">
+                                            <div class="vaild-into">
+                                                <div class="form-area wp-21 mr10">
+                                                    <div class="search-form">
+                                                        <input type="text" placeholder="Search" [(ngModel)]="filter.offer_title"  (keyup.enter)="current_page = 1;getScannedList()">
+                                                        <i class="material-icons">search</i>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="date-form wp-21 mr10">
+                                                    <i *ngIf="filter.end_date" class="material-icons" (click)="filter.end_date = '';getScannedList() ">clear</i>
+                                                    
+                                                    <mat-form-field>
+                                                        <input matInput placeholder=" Search"  [(ngModel)]="filter.end_date" (click)="openDatePicker(picker4)" name="end_date" matInput (dateChange)="getScannedList()" [matDatepicker]="picker4" readonly>
+                                                        <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+                                                        <mat-datepicker #picker4></mat-datepicker>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+                                            <div class="form-area">             
+                                                <button mat-button class="go" (click)="getScannedList()">Go</button>
+                                            </div>
+                                        </th> -->
+                                   
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="table-container">
+                            <div class="table-body" *ngIf="assignplumber.length > 0">
+                                <table>
+                                    <tr *ngFor="let val of assignplumber; let i = index">
+                                        <td class="w50">{{ i + 1 }}</td>
+                                      
+                                        <td class="w200">{{val.company_name}} </td>
+                                        <td>{{val.full_name}} </td>
+                                        <td class="w150">{{val.mobile_no}} </td>
+                                        <td class="w150">{{val.state}} </td>
+                                        <td class="w150">{{val.district}} </td>
+                                       
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="date-not" *ngIf="assignplumber.length == 0">
+                                <div class="no-img">
+                                    <img src="assets/not-available.jpg"> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+
+
                 </div>
             </div>
             <div class="add-button">

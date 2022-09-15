@@ -44,7 +44,7 @@ export class GiftsComponent implements OnInit {
   gift_point : any = 0;
   gift_all : any = 0;
   
-  constructor(public db: DatabaseService, public dialog: DialogComponent, private navrouter:Router, public alrt:MatDialog,public router:ActivatedRoute,public ses: SessionStorage) { }
+  constructor(public db: DatabaseService, private navrouter:Router,  public dialog: DialogComponent,public alrt:MatDialog,public router:ActivatedRoute,public ses: SessionStorage) { }
 
   ngOnInit() {
     this.uploadUrl = this.db.uploadUrl;
@@ -110,13 +110,10 @@ getGiftList(action)
             if(this.gift[i].status=="Active")
             {
                 this.gift[i].giftStatus=true;
-                console.log( this.gift[i].newsStatus);
             }
             else if(this.gift[i].status=="Deactive")
             {
                 this.gift[i].giftStatus=false;
-                console.log(this.gift[i].newsStatus);
-                
             }
         }   
         
@@ -131,7 +128,6 @@ getGiftList(action)
         this.gift_reject =  d.gift_reject;
     });
 }
-
 
 editGift(val){
     console.log(val)
@@ -207,17 +203,17 @@ deleteGift(id) {
         this.getGiftList('');
     });
 }
-openDialog(id ,string ) {
-    const dialogRef = this.alrt.open(ProductImageModuleComponent,{
+openDialog(img) {
+    const dialogRef = this.alrt.open(ProductImageModuleComponent,
+      {
         data: {
-            'id' : id,
-            'mode' : string,
+          'img' : img,
         }
-    });
-    dialogRef.afterClosed().subscribe(result => {
+      });
+      dialogRef.afterClosed().subscribe(result => {
         console.log(`Dialog result: ${result}`);
-    });
-}
+      });
+    }
 
 
 openDatepicker(): void {

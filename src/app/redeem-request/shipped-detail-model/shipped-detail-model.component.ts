@@ -27,8 +27,8 @@ export class ShippedDetailModelComponent implements OnInit {
       
       this.offer.karigar_gift_id= data.id; 
       this.offer.karigar_id=data.karigar_id;
+      this.offer.payment_type=this.data.payment_type;
       console.log(this.offer.karigar_id);
-      this.offer.redeem_type=this.data.redeem_type;
       
     }
     ngOnInit() {
@@ -41,7 +41,7 @@ export class ShippedDetailModelComponent implements OnInit {
    
     submit(form:any)
     {
-      
+     
       this.offer.created_by=this.db.datauser.id;
       this.offer.estimated_date = this.offer.estimated_date  ? this.db.pickerFormat(this.offer.estimated_date) : '';
       this.db.post_rqst( { 'shipped' : this.offer }, 'offer/shippedInfo')
