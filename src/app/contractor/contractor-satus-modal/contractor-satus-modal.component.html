@@ -73,7 +73,7 @@
         <div class="option-field" *ngIf="couponTransfer.status_type == 'Approved' ">
           <div class="control-field">
             <mat-form-field class="cs-input">
-              <input matInput placeholder="Transfer Points" name="coupon_points" [(ngModel)] = "couponTransfer.coupon_points" #coupon_points="ngModel" (keypress)="numeric_Number($event)"  required>
+              <input matInput placeholder="Transfer Points" name="coupon_points" [(ngModel)] = "couponTransfer.coupon_points" #coupon_points="ngModel" required>
             </mat-form-field>  
           </div>
         </div>

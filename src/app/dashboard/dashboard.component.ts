@@ -458,6 +458,9 @@ export class DashboardComponent implements OnInit {
         }else if(action === 'Retailer'){
             this.router.navigate(['dealer-list/1'],{queryParams:{mode:action}});
         }
+        else if(action === 'Distributor'){
+            this.router.navigate(['distributor-list/1'],{queryParams:{mode:action}});
+        }
     }
     
     goto_productPage()

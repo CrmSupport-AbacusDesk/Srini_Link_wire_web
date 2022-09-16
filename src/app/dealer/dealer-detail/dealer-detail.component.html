@@ -260,9 +260,9 @@
 
 
 
-                
 
-                 <div class="sprate-box gift-offer">
+
+                <div class="sprate-box gift-offer">
                     <div class="full-offer">
                         <div class="top-heading">
                             <h2> DISTRIBUTOR DETAIL</h2>
@@ -296,7 +296,7 @@
                                             <span>{{!getData.email ? 'N/A' : getData.email}}</span>
                                         </li> -->
 
-                                     <!-- <li>
+                                        <!-- <li>
                                             <p>Counter Name</p>
                                             <span>{{!getData.parent_counter_name?'N/A':getData.parent_counter_name | titlecase }}</span>
                                         </li>
@@ -340,7 +340,7 @@
                             </div>
                         </div>
                     </div>
-                </div> 
+                </div>
 
 
 
@@ -353,7 +353,13 @@
                         <div class="tab-header no-sticky gift-tab-list ">
                             <div class="tabs-list gift-tab-list ">
                                 <ul>
-
+                                    <li class="active" (click)="mode='1'; myPointList()"
+                                        [ngClass]="{'active': mode == '1'}">
+                                        <a>
+                                            <p>EARN POINT REQUEST</p>
+                                            <span>{{totalCount}}</span>
+                                        </a>
+                                    </li>
                                     <li (click)="mode='4'; getReferral()" [ngClass]="{'active': mode == '4'}">
                                         <a>
                                             <p>PLUMNER POINT TRANSFER</p>
@@ -361,12 +367,7 @@
                                         </a>
                                     </li>
 
-                                    <!-- <li (click)="mode='1'; myPointList()" [ngClass]="{'active': mode == '1'}">
-                                        <a>
-                                            <p>POINT WALLET</p>
-                                            <span>{{totalCount}}</span>
-                                        </a>
-                                    </li> -->
+
 
 
                                     <li (click)="mode='2'; getReedamList()" [ngClass]="{'active': mode == '2'}">
@@ -382,7 +383,20 @@
                                         </a>
                                     </li>
 
-                                   
+                                    <li (click)="mode='5'; getReferral()" [ngClass]="{'active': mode == '5'}">
+                                        <a>
+                                            <p>COMPANY POINTS TRANFER</p>
+                                            <span>{{company_point_transfer.length}}</span>
+                                        </a>
+                                    </li>
+
+                                    <li (click)="mode='6'; getAssignPlumberList()" [ngClass]="{'active': mode == '6'}">
+                                        <a>
+                                            <p>ASSIGN PLUMBER LIST</p>
+                                            <span>{{assignplumber.length}}</span>
+                                        </a>
+                                    </li>
+
 
 
                                 </ul>
@@ -477,10 +491,13 @@
                                                         <mat-label>All</mat-label>
                                                         <mat-select [(ngModel)]="filter.status" name="status"
                                                             #status="ngModel" (selectionChange)="myPointList('')">
-                                                            <mat-option value="">All</mat-option>
-                                                            <mat-option value="Approved">Approved</mat-option>
-                                                            <mat-option value="Pending">Pending</mat-option>
-                                                            <mat-option value="Reject">Reject</mat-option>
+                                                            <mat-option class="Suspect" value="">All</mat-option>
+                                                            <mat-option class="Verified" value="Approved">Approved
+                                                            </mat-option>
+                                                            <mat-option class="Pending" value="Pending">Pending
+                                                            </mat-option>
+                                                            <mat-option class="Reject" value="Reject">Reject
+                                                            </mat-option>
                                                         </mat-select>
                                                     </mat-form-field>
                                                 </div>
@@ -752,8 +769,8 @@
 
 
 
-                 
-                
+
+
 
 
                     <div class="css-table" *ngIf="mode == '4'">
@@ -790,12 +807,133 @@
                         </div>
                     </div>
 
-                
 
 
 
 
+                    <div class="css-table" *ngIf="mode == '5'">
+                        <div class="sticky-header">
+                            <div class="header">
+                                <table>
+                                    <tr>
+                                        <th class="w50">S No</th>
+                                        <th class="w200">Date Created</th>
+                                        <th class="w100">Log Type</th>
+                                        <th class="w100">Points</th>
+                                        <th>Summary</th>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="table-container">
+                            <div class="table-body" *ngIf="company_point_transfer.length > 0">
+                                <table>
+                                    <tr *ngFor="let val of company_point_transfer; let i = index">
+                                        <td class="w50">{{ i + 1 }}</td>
+                                        <td class="w200">{{ val.date_created | date: 'dd MMM yyyy' }}</td>
+                                        <td class="w100">{{val.log_type}}</td>
+                                        <td class="w100">{{val.points}}</td>
+                                        <td>{{val.summary}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="date-not" *ngIf="company_point_transfer.length == '0'">
+                                <div class="no-img">
+                                    <img src="assets/not-available.jpg">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
+
+
+
+                    <div class="css-table " *ngIf="mode == '6'">
+                        <div class="sticky-header bo-non">
+                            <div class="header">
+                                <table>
+                                    <tr>
+                                        <th class="w50"></th>
+
+                                        <th class="w250"> Name</th>
+                                        <th class="w200">Mobile Number</th>
+                                        <th class="w250">State</th>
+                                        <th class="w250">District</th>
+                                        <th class="w150">Status</th>
+
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="header">
+                                <table>
+                                    <tr>
+                                        <th class="w50"></th>
+
+
+
+                                        <th class="w250">
+                                            <div class="search-form">
+                                                <input type="text" placeholder="Search" [(ngModel)]="filter.full_name"
+                                                    (keyup.enter)="current_page = 1; getAssignPlumberList()">
+                                                <i class="material-icons">search</i>
+                                            </div>
+                                        </th>
+                                        <th class="w200">
+                                            <div class="search-form">
+                                                <input type="text" placeholder="Search" [(ngModel)]="filter.mobile_no"
+                                                    (keyup.enter)="current_page = 1; getAssignPlumberList()">
+                                                <i class="material-icons">search</i>
+                                            </div>
+                                        </th>
+                                        <th class="w250">
+                                            <div class="search-form">
+                                                <input type="text" placeholder="Search" [(ngModel)]="filter.state"
+                                                    (keyup.enter)="current_page = 1; getAssignPlumberList()">
+                                                <i class="material-icons">search</i>
+                                            </div>
+                                        </th>
+                                        <th class="w250">
+                                            <div class="search-form">
+                                                <input type="text" placeholder="Search" [(ngModel)]="filter.district"
+                                                    (keyup.enter)="current_page = 1; getAssignPlumberList()">
+                                                <i class="material-icons">search</i>
+                                            </div>
+                                        </th>
+                                        <th class="w150">
+
+                                        </th>
+
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="table-container">
+                            <div class="table-body" *ngIf="assignplumber.length > 0">
+                                <table>
+                                    <tr *ngFor="let val of assignplumber; let i = index">
+                                        <td class="w50">{{ i + 1 }}</td>
+
+
+                                        <td class="w250"><a class="blue"
+                                                routerLink="/karigar-detail/{{val.id}}/{{current_page}}">{{val.full_name}}</a>
+                                        </td>
+
+                                        <td class="w200">{{val.mobile_no}} </td>
+                                        <td class="w250">{{val.state}} </td>
+                                        <td class="w250">{{val.district}} </td>
+                                        <td class="w150">{{val.status}} </td>
+
+
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="date-not" *ngIf="assignplumber.length == 0">
+                                <div class="no-img">
+                                    <img src="assets/not-available.jpg">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
 
 

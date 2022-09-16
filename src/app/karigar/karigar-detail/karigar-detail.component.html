@@ -268,7 +268,7 @@
                         <div class="tab-header no-sticky gift-tab-list ">
                             <div class="tabs-list gift-tab-list ">
                                 <ul>
-                                    <li (click)="mode='4'; getReferral()" [ngClass]="{'active': mode == '4'}" >
+                                    <li (click)="mode='1'; getReferral()" [ngClass]="{'active': mode == '1'}" >
                                         <a>
                                             <p>POINT RECEIVE BY RETAILERS</p>
                                             <span>{{point_transfer.length}}</span>
@@ -276,6 +276,7 @@
                                     </li>
 
 
+                                    
 
                                     <!-- <li (click)="mode='1'; getScannedList()" [ngClass]="{'active': mode == '1'}" >
                                         <a>
@@ -300,7 +301,7 @@
 
                                     <li (click)="mode='5'; getAssignPlumber()" [ngClass]="{'active': mode == '5'}" >
                                         <a>
-                                            <p>RETAILER ASSIGN PLUMBER</p>
+                                            <p>ASSIGN RETAILER</p>
                                             <span>{{retailer_count}}</span>
                                         </a>
                                     </li>
@@ -328,7 +329,10 @@
                 </div>
                 
                 <div class="sprate-box no-box">
-                    <div class="css-table " *ngIf="mode == '1'">
+
+
+
+                 <!-- <div class="css-table " *ngIf="mode == '1'">     
                         <div class="sticky-header bo-non">
                             <div class="header">
                                 <table>
@@ -338,7 +342,7 @@
                                         <th class="w150" >Scan Date</th>
                                         <th class="w200" >Brand Name</th>
                                         <th>Coupon Code</th>
-                                        <!-- <th>Offer / Valid Upto </th> -->
+                                        <th>Offer / Valid Upto </th>
                                         <th class="w135">Points</th>
                                         <th class="w150">Action</th>
                                     </tr>
@@ -378,7 +382,7 @@
                                         <th></th>
 
                                         
-                                        <!-- <th class="go-btn">
+                                       <th class="go-btn">
                                             <div class="vaild-into">
                                                 <div class="form-area wp-21 mr10">
                                                     <div class="search-form">
@@ -400,7 +404,7 @@
                                             <div class="form-area">             
                                                 <button mat-button class="go" (click)="getScannedList()">Go</button>
                                             </div>
-                                        </th> -->
+                                        </th> 
                                         <th class="w135">
                                             <div class="search-form">
                                                 <input type="text" placeholder="Search" [(ngModel)]="filter.points"  (keyup.enter)="current_page = 1;getScannedList()">
@@ -422,7 +426,7 @@
                                         <td class="w200">{{val.product_point_group}} </td>
                                         <td >{{val.coupon_code}} </td>
 
-                                        <!-- <td><a  routerLink="/offer-detail"  routerLink="/offer-detail/{{val.offer_id}}" class="blue">{{val.title}} #{{val.offer_code}}</a> / {{val.end_date | date : 'dd MMM yyyy'}}</td> -->
+                                        <td><a  routerLink="/offer-detail"  routerLink="/offer-detail/{{val.offer_id}}" class="blue">{{val.title}} #{{val.offer_code}}</a> / {{val.end_date | date : 'dd MMM yyyy'}}</td>
                                         <td class="w135">{{val.karigar_coupon_value}}</td>
                                         <td class="w150 active">
                                             <button mat-button class="color-btn" *ngIf="val.coupon_value == val.actual_coupon_point" (click)="reponeCoupon(val.id)">Reopen</button>
@@ -437,7 +441,56 @@
                             </div>
                         </div>
                     </div>
-                    
+                      -->
+
+
+
+
+
+
+
+                     <div class="css-table" *ngIf="mode == '1'">
+                        <div class="sticky-header bo-non">
+                            <div class="header">
+                                <table>
+                                    <tr>
+                                        <th class="w50">S No</th>
+                                        <th class="w200">Date Created</th>
+                                        <th class="w100">Log Type</th>
+                                        <th class="w100">Points</th>
+                                        <th>Summary</th>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="table-container">
+                            <div class="table-body" *ngIf="point_transfer.length > 0">
+                                <table> 
+                                    <tr  *ngFor="let val of point_transfer; let i = index">
+                                        <td class="w50">{{ i + 1 }}</td>
+                                        <td class="w200">{{ val.date_created | date: 'dd MMM yyyy' }}</td>
+                                        <td class="w100">{{val.log_type}}</td>
+                                        <td class="w100">{{val.points}}</td>
+                                        <td>{{val.summary}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="date-not" *ngIf="point_transfer.length == '0'">
+                                <div class="no-img">
+                                    <img src="assets/not-available.jpg">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+
+
                     <div class="css-table" *ngIf="mode == '2'">
                         <div class="sticky-header">
                             <div class="header">
@@ -628,39 +681,7 @@
 
 
 
-                    <div class="css-table" *ngIf="mode == '4'">
-                        <div class="sticky-header">
-                            <div class="header">
-                                <table>
-                                    <tr>
-                                        <th class="w50">S No</th>
-                                        <th class="w200">Date Created</th>
-                                        <th class="w100">Log Type</th>
-                                        <th class="w100">Points</th>
-                                        <th>Summary</th>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
-                        <div class="table-container">
-                            <div class="table-body" *ngIf="point_transfer.length > 0">
-                                <table> 
-                                    <tr  *ngFor="let val of point_transfer; let i = index">
-                                        <td class="w50">{{ i + 1 }}</td>
-                                        <td class="w200">{{ val.date_created | date: 'dd MMM yyyy' }}</td>
-                                        <td class="w100">{{val.log_type}}</td>
-                                        <td class="w100">{{val.points}}</td>
-                                        <td>{{val.summary}}</td>
-                                    </tr>
-                                </table>
-                            </div>
-                            <div class="date-not" *ngIf="point_transfer.length == '0'">
-                                <div class="no-img">
-                                    <img src="assets/not-available.jpg">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                  
 
 
 
@@ -762,7 +783,8 @@
                                     <tr *ngFor="let val of assignplumber; let i = index">
                                         <td class="w50">{{ i + 1 }}</td>
                                       
-                                        <td class="w200">{{val.company_name}} </td>
+                                        <!-- <td class="w200"><a  class="blue" routerLink="dealer-detail/11/1">{{val.company_name}} </a></td> -->
+                                        <td class="w200"><a class="blue" routerLink="/dealer-detail/{{val.id}}/{{current_page}}" >{{val.company_name}}</a></td>
                                         <td>{{val.full_name}} </td>
                                         <td class="w150">{{val.mobile_no}} </td>
                                         <td class="w150">{{val.state}} </td>
