@@ -27,7 +27,7 @@ export class ContractorSatusModalComponent implements OnInit {
     console.log( this.id);
 
     this.couponTransfer.coupon_points =  data.point
-    
+     
     if(data.type =='image'){
       this.getProduct();
     }
