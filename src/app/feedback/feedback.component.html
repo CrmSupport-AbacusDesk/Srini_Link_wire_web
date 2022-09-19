@@ -37,7 +37,7 @@
                         </a>
                     </li>
                 </ul>
-    
+                
                 <div class="input-field" *ngIf="!(!filtering && feedback.length == 0 ) ">
                     <input type="text" placeholder="Search" [(ngModel)]="filter.search"  (keyup.enter)="current_page = 1;getFeedbackList(pagelimit,start,'')">
                     <i class="material-icons">
@@ -73,9 +73,9 @@
                     <table>
                         <tr>
                             <th class="w30">&nbsp;</th>
-                            <th class="w170">Msg Date</th>
-                            <th class="w200">Karigar Name</th>
-                            <th class="w150">Mobile No.</th>
+                            <th class="w100">Msg Date</th>
+                            <th class="w200">Name</th>
+                            <th class="w100">Mobile No.</th>
                             <th>Address</th>
                             <th class="w70 text-center">{{filter.msg_status}} Messages</th>
                             <th class="w70 text-center">Reply</th>
@@ -87,14 +87,14 @@
                     <table>
                         <tr>
                             <th class="w30">&nbsp;</th>
-                            <th class="w170"></th>
+                            <th class="w100"></th>
                             <th  class="w200">
                                 <div class="search-form">
                                     <input type="text" placeholder="Name" [(ngModel)]="filter.first_name"  (keyup.enter)="current_page = 1;getFeedbackList(pagelimit,start,'')">
                                     <i class="material-icons">search</i>
                                 </div>
                             </th>
-                            <th class="w150">
+                            <th class="w100">
                                 <div class="search-form">
                                     <input type="text" placeholder="Mobile" [(ngModel)]="filter.mobile_no"  (keyup.enter)="current_page = 1;getFeedbackList(pagelimit,start,'')">
                                     <i class="material-icons">search</i>
@@ -115,9 +115,16 @@
                 <table>
                     <tr *ngFor="let val of feedback; let i = index">
                         <td class="w30">{{ ( (current_page - 1 ) * 20 ) + ( i+1 ) }}</td>
-                        <td class="w170"> {{val.date_created  == '0000-00-00' ? 'N/A' : val.date_created | date: 'dd MMM yyyy'}}</td>
-                        <td class="w200"><a class="blue" routerLink="/karigar-detail/{{val.karigar_id}}/{{current_page}}" routerLinkActive="active">{{val.first_name | titlecase }} {{val.last_name | titlecase }}</a></td>
-                        <td class="w150">{{val.mobile_no}}</td>
+                        <td class="w100"> {{val.date_created  == '0000-00-00' ? 'N/A' : val.date_created | date: 'dd MMM yyyy'}}</td>
+                        <td class="w200">
+                            <ng-container *ngIf="val.user_type == 1">
+                                <a class="blue" routerLink="/karigar-detail/{{val.karigar_id}}/{{current_page}}" routerLinkActive="active">{{val.first_name | titlecase }} {{val.last_name | titlecase }}</a>
+                            </ng-container>
+                            <ng-container *ngIf="val.user_type == 2">
+                                <a class="blue" routerLink="/dealer-detail/{{val.karigar_id}}/{{current_page}}" routerLinkActive="active">{{val.first_name | titlecase }} {{val.last_name | titlecase }}</a>
+                            </ng-container>
+                        </td>
+                        <td class="w100">{{val.mobile_no}}</td>
                         <td>{{val.address }} {{!val.city? '' : ' , '+val.city | titlecase }} {{!val.district? '' : ' , '+val.district | titlecase }} {{!val.state? '' : ' , '+val.state | titlecase }}</td>
                         <td class="w70 text-center">{{val.total_msg}} </td>
                         <td class="w70 text-center"><a style="cursor: pointer;" (click)="reply(val.karigar_id)"  matTooltip="Reply"  matTooltipPosition="above"><i class="material-icons">send</i></a></td>
