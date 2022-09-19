@@ -14,7 +14,7 @@
                         </div>
                         <div class="cs-item">
                             <span>{{offer_Retailer}}</span>
-                            <p>Retailer</p>
+                            <p>Dealer</p>
                         </div>
                     </div>
                     <!-- <div class="counter-value">
@@ -41,7 +41,7 @@
                         </div>
                         <div class="cs-item">
                             <span>{{pending_redeem_request_retailer}}</span>
-                            <p>Retailer</p>
+                            <p>Dealer</p>
                         </div>
                     </div>
                 </li>
@@ -63,7 +63,7 @@
                         </div>
                         <div class="cs-item">
                             <span>{{coupon_value_scan_by_Retailer}}</span>
-                            <p>Retailer</p>
+                            <p>Dealer</p>
                         </div>
                     </div>
                 </li>
@@ -84,7 +84,7 @@
                         </div>
                         <div class="cs-item" (click)="goto_karigarsPage('dealer')">
                             <span>{{user_Retailer}}</span>
-                            <p>Retailer</p>
+                            <p>Dealer</p>
                         </div>
                         <!-- <div class="cs-item">
                             <span>{{user_Distributor}}</span>
@@ -135,7 +135,7 @@
         <div class="col s6 ">
             <div class="pie-chart">
                 <div class="chart-header">
-                    <p>State Wise Retailer</p>
+                    <p>State Wise Dealer</p>
                 </div>
                 <div class="graph">
                     <fusioncharts
@@ -221,7 +221,7 @@
 
                 <div class="sm-tab">
                     <a class="" [ngClass]="{'active': showKarigarList == true}"  (click)="showKarigar()" mat-button>Electrician</a>
-                    <a class="" [ngClass]="{'active': showDealersList == true}" (click)="showDealers()" mat-button>Retailer</a>
+                    <a class="" [ngClass]="{'active': showDealersList == true}" (click)="showDealers()" mat-button>Dealer</a>
                     <!-- <a class="" mat-button>Distributor</a> -->
                 </div>
             </div>
@@ -277,7 +277,7 @@
                 <p>Last 7 Day's Wise Scan Codes</p>
                 <div class="sm-tab">
                     <a class="" [ngClass]="{'active': show_karigar_graph == true}" (click)="showKarigarGraph()" mat-button>Electrician</a>
-                    <a class="" [ngClass]="{'active': show_dealer_graph == true}" (click)="showDealerGraph()" mat-button>Retailer</a>
+                    <a class="" [ngClass]="{'active': show_dealer_graph == true}" (click)="showDealerGraph()" mat-button>Dealer</a>
                     <!-- <a class="" mat-button>Distributor</a> -->
                 </div>
             </div>

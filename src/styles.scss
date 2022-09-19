@@ -2584,7 +2584,7 @@ table
             background: var(--white);
             
             img{
-                height: 90px;
+                height: 60px;
             }
         }
         
@@ -2961,9 +2961,13 @@ header
             {
                 display: flex;
                 align-items: center;
+                align-items: center;
+                background: #fff;
+                padding: 10px;
+
                 img
                 {
-                    height: 85px;
+                    height: 35px;
                     transition: 0.5s;
                     object-fit: contain;
                 }
@@ -5226,7 +5230,7 @@ footer
     bottom: 0px;
     width: 100%;
     left: 0;
-    background: var(--secondary);
+    background: #434343;
     display: flex;
     align-items: center;
     justify-content: flex-end;

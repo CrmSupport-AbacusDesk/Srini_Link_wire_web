@@ -50,7 +50,7 @@
               <th class="w90 text-center" (click)="sortByPoints()">
                 <div class="view">
                   <i class="material-icons">swap_vert</i>
-                   Retailer Points
+                   Dealer Points
                   </div> 
                 </th>
 
@@ -101,7 +101,7 @@
               </td>
               <td>{{val.product_point_group}}</td>
               <td class="w100 text-center">{{val.karigar_point}}</td>
-              <td class="w90">{{val.retailer_point}}</td>
+              <td class="w90  text-center">{{val.retailer_point}}</td>
 
               <!-- <td class="w100 text-center">{{val.painter_point}}</td>
               <td class="w150">{{val.last_updated_by}} - {{val.last_updated | date: 'dd MMM yyyy'}}</td> -->
@@ -167,7 +167,7 @@
           <div class="option-field">
             <div class="control-field">
               <mat-form-field class="cs-input">
-                <input matInput placeholder="Retailer Point" name="retailer_point"  [(ngModel)]="productForm.retailer_point" #retailer_point="ngModel" required>
+                <input matInput placeholder="Dealer Point" name="retailer_point"  [(ngModel)]="productForm.retailer_point" #retailer_point="ngModel" required>
               </mat-form-field>  
             </div>
           </div>   
