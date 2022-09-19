@@ -22,7 +22,7 @@
                     </li>
                     <li (click)="mode='3';filter = {}; current_page=1; getScannedListRetailer(''); " [ngClass]="{'active': mode == '3'}">
                         <a>
-                            <p>SCANNED BY RETAILER</p>
+                            <p>SCANNED BY DEALER</p>
                             <span *ngIf="sccaned_coupon_count_retailer">{{ sccaned_coupon_count_retailer}}</span>
                         </a>
                     </li>

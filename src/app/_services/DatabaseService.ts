@@ -17,8 +17,8 @@
     @Injectable({ providedIn: 'root' })
     export class DatabaseService implements OnInit {
         
-        myurl = 'https://devcrm.abacusdesk.com/konceptled/dd_api/';
-        uploadUrl = "https://devcrm.abacusdesk.com/konceptled/dd_api/app/uploads/";
+        myurl = 'https://devcrm.abacusdesk.com/srinilinkwire/dd_api/';
+        uploadUrl = "https://devcrm.abacusdesk.com/srinilinkwire/dd_api/app/uploads/";
         
         // local
         // myurl = 'http://localhost/advance_api/';
