@@ -57,6 +57,9 @@ export class DealerAddComponent implements OnInit {
           this.loading_list = false;
           console.log(d);
           this.karigarform = d.karigar;
+          if(this.karigarform.doa == '0000-00-00'){
+            this.karigarform.doa = '';
+        }
           console.log( this.karigarform);
           this.getDistrictList(1);
           this.getCityList(1);

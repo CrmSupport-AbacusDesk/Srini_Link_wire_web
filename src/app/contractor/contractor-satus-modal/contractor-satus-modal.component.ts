@@ -105,10 +105,11 @@ export class ContractorSatusModalComponent implements OnInit {
     {
 
      
-      // if(this.couponTransfer.coupon_points== '') {
-      //   this.dialog.warning('Transfer points is required');
-
-      // }
+      if(this.couponTransfer.status_type == 'Approved' && this.couponTransfer.coupon_points == 0 ){
+        this.dialog.warning('Transfer Point Required');
+        return
+      }
+      
       if(this.couponTransfer.status_type == 'Approved' && this.data.type =='image'){
         
         if(this.contractorData.length < 1){

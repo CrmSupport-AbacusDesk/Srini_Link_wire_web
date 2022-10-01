@@ -138,6 +138,11 @@ export class DashboardComponent implements OnInit {
                 this.loading_list = false;
                 console.log(resp);
                 this.super_dealers = resp.super_Retailers;
+                for(var i=0; i<this.super_dealers.length; i++)
+                {
+                  
+                    this.super_dealers[i]['total_wallet_point'] = parseInt(this.super_dealers[i]['balance_point']) + parseInt(this.super_dealers[i]['referal_point_balance']);
+                }
             });
         }
         
