@@ -17,16 +17,13 @@
     @Injectable({ providedIn: 'root' })
     export class DatabaseService implements OnInit {
         
-        myurl = 'https://devcrm.abacusdesk.com/srinilinkwire/dd_api/';
-        uploadUrl = "https://devcrm.abacusdesk.com/srinilinkwire/dd_api/app/uploads/";
+        // Test Url
+        // myurl = 'https://devcrm.abacusdesk.com/srinilinkwire/dd_api/';
+        // uploadUrl = "https://devcrm.abacusdesk.com/srinilinkwire/dd_api/app/uploads/";
         
-        // local
-        // myurl = 'http://localhost/advance_api/';
-        // uploadUrl = "http://localhost/advance_api/app/uploads/";
-        
-        //cloneed
-        // myurl = 'http://phpstack-83335-1175063.cloudwaysapps.com/dd_api/';
-        // uploadUrl = "http://phpstack-83335-1175063.cloudwaysapps.com/dd_api/app/uploads/";
+          // Live Url
+          myurl = 'https://apps.abacusdesk.com/srinilinkwire/dd_api/';
+          uploadUrl = "https://apps.abacusdesk.com/srinilinkwire/dd_api/app/uploads/";
 
         can_active = '';
         datauser: any = {};
