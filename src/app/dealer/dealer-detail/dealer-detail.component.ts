@@ -204,7 +204,7 @@ export class DealerDetailComponent implements OnInit {
 
 
   referral_data:any=[];
-  point_transfer:any=[];
+  point_transfer:any=[]; 
   company_point_transfer:any=[];
   
   getReferral() 
